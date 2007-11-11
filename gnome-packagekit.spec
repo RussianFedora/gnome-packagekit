@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -55,12 +55,12 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
-desktop-file-install --vendor="gnome" --delete-original                 \
+desktop-file-install --delete-original                                  \
   --dir=$RPM_BUILD_ROOT%{_datadir}/gnome/autostart                      \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/pk-update-icon.desktop
 
 for i in pk-application pk-update-viewer pk-update-icon pk-install-file pk-transaction-viewer pk-prefs pk-repo ; do
-  desktop-file-install --vendor="gnome" --delete-original               \
+  desktop-file-install --delete-original                                \
     --dir=$RPM_BUILD_ROOT%{_datadir}/applications/                      \
     $RPM_BUILD_ROOT%{_datadir}/applications/$i.desktop
 done
@@ -111,10 +111,14 @@ fi
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
-%{_datadir}/gnome/autostart/gnome-pk-update-icon.desktop
-%{_datadir}/applications/gnome-pk-*.desktop
+%{_datadir}/gnome/autostart/pk-update-icon.desktop
+%{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Sun Nov 11 2007 Ray Strode <rstrode@redhat.com> - 0.1.2-2
+- remove --vendor "gnome" from desktop-file-install calls. It's
+  deprecated and changes the latest of .desktop files.
+
 * Thu Nov 01 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.2-1
 - Update to latest upstream version: 0.1.2
 
