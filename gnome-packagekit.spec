@@ -1,10 +1,10 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.2
+%define packagekit_version       0.1.3
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   2%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -115,6 +115,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Mon Nov 12 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.3-1
+- Update to latest upstream version: 0.1.3
+
 * Sun Nov 11 2007 Ray Strode <rstrode@redhat.com> - 0.1.2-2
 - remove --vendor "gnome" from desktop-file-install calls. It's
   deprecated and changes the latest of .desktop files.
