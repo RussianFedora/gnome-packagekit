@@ -1,5 +1,5 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.3
+%define packagekit_version       0.1.4
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
@@ -115,6 +115,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Tue Nov 27 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.4-1
+- Update to latest upstream version: 0.1.4
+
 * Mon Nov 12 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.3-1
 - Update to latest upstream version: 0.1.3
 
