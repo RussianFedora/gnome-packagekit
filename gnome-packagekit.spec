@@ -1,5 +1,5 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.4
+%define packagekit_version       0.1.5
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
@@ -8,9 +8,9 @@ Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://people.freedesktop.org/~hughsient/releases/gnome-packagekit-%{version}.tar.gz
+Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:  gtk2 >= 2.10.0
+Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
 Requires:  dbus-glib >= %{dbus_version}
@@ -46,7 +46,7 @@ removing packages on your system.
 %setup -q
 
 %build
-%configure --disable-scrollkeeper
+%configure --disable-scrollkeeper --disable-schemas-install
 make %{?_smp_mflags}
 
 %install
@@ -59,7 +59,7 @@ desktop-file-install --delete-original                                  \
   --dir=$RPM_BUILD_ROOT%{_datadir}/gnome/autostart                      \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/pk-update-icon.desktop
 
-for i in pk-application pk-update-viewer pk-update-icon pk-install-file pk-transaction-viewer pk-prefs pk-repo ; do
+for i in pk-application pk-update-viewer pk-install-file pk-transaction-viewer pk-prefs pk-repo ; do
   desktop-file-install --delete-original                                \
     --dir=$RPM_BUILD_ROOT%{_datadir}/applications/                      \
     $RPM_BUILD_ROOT%{_datadir}/applications/$i.desktop
@@ -115,6 +115,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Fri Dec 21 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.5-1
+- Update to latest upstream version: 0.1.5
+ 
 * Tue Nov 27 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.4-1
 - Update to latest upstream version: 0.1.4
 
