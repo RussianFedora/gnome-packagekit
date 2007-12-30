@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -36,6 +36,7 @@ BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: PackageKit-devel = %{packagekit_version}
+Patch1: gnome-packagekit-0.1.5-Werror.patch
 
 %description
 packagekit-gnome provides session applications for the PackageKit API.
@@ -44,6 +45,7 @@ removing packages on your system.
 
 %prep
 %setup -q
+%patch1 -p1 -b .Werror
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -115,6 +117,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Sun Dec 30 2007 Christopher Aillon <caillon@redhat.com> - 0.1.5-2
+- Fix the build
+
 * Fri Dec 21 2007 Robin Norwood <rnorwood@redhat.com> - 0.1.5-1
 - Update to latest upstream version: 0.1.5
  
