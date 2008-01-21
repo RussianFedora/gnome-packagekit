@@ -1,10 +1,10 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.5
+%define packagekit_version       0.1.6
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   2%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -36,7 +36,6 @@ BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: PackageKit-devel = %{packagekit_version}
-Patch1: gnome-packagekit-0.1.5-Werror.patch
 
 %description
 packagekit-gnome provides session applications for the PackageKit API.
@@ -45,7 +44,6 @@ removing packages on your system.
 
 %prep
 %setup -q
-%patch1 -p1 -b .Werror
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -57,7 +55,7 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
-desktop-file-install --delete-original                                  \
+desktop-file-install --vendor gnome --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_datadir}/gnome/autostart                      \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/pk-update-icon.desktop
 
@@ -113,10 +111,13 @@ fi
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
-%{_datadir}/gnome/autostart/pk-update-icon.desktop
+%{_datadir}/gnome/autostart/gnome-pk-update-icon.desktop
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Sat Jan 19 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.6-1
+- Update to latest upstream version: 0.1.6
+
 * Sun Dec 30 2007 Christopher Aillon <caillon@redhat.com> - 0.1.5-2
 - Fix the build
 
