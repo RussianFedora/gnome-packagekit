@@ -1,5 +1,5 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.6
+%define packagekit_version       0.1.7
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
@@ -108,6 +108,7 @@ fi
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/pk-*
 %{_datadir}/gnome-packagekit
+%{_datadir}/gnome-packagekit/pk-*.glade
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
@@ -115,6 +116,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Fri Feb 15 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.7-1
+- Update to latest upstream version: 0.1.7
+
 * Sat Jan 19 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.6-1
 - Update to latest upstream version: 0.1.6
 
