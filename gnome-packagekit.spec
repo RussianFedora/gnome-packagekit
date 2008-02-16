@@ -35,6 +35,7 @@ BuildRequires: libtool
 BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
+BuildRequires: libsexy-devel
 BuildRequires: PackageKit-devel = %{packagekit_version}
 
 %description
