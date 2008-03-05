@@ -1,5 +1,5 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.8
+%define packagekit_version       0.1.9
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
@@ -15,6 +15,7 @@ Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
 Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
+Requires:  PackageKit = %{packagekit_version}
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
 Requires(post):   GConf2
@@ -117,6 +118,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Wed Mar  5 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-1
+- Update to latest upstream version: 0.1.8
+
 * Thu Feb 21 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.8-1
 - Update to latest upstream version: 0.1.8
 
