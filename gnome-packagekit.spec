@@ -4,12 +4,13 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Patch0:    gnome-packagekit-enable-kde.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
@@ -46,6 +47,7 @@ removing packages on your system.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -118,6 +120,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Tue Mar 11 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-2
+- Apply patch to enable gnome-packagekit in KDE
+
 * Wed Mar  5 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-1
 - Update to latest upstream version: 0.1.8
 
