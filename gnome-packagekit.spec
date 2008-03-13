@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -71,6 +71,8 @@ done
 
 %find_lang %name
 
+ln -s pk-install-file $RPM_BUILD_ROOT%{_bindir}/system-install-packages
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -111,8 +113,8 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/pk-*
+%{_bindir}/system-install-packages
 %{_datadir}/gnome-packagekit
-%{_datadir}/gnome-packagekit/pk-*.glade
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
@@ -120,6 +122,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Thu Mar 13 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-3
+- symlink pk-install-file to system-install-packages
+
 * Tue Mar 11 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-2
 - Apply patch to enable gnome-packagekit in KDE
 
