@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   3%{?dist}
+Release:   4%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -59,8 +59,8 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
-desktop-file-install --vendor gnome --delete-original                   \
-  --dir=$RPM_BUILD_ROOT%{_datadir}/gnome/autostart                      \
+desktop-file-install --delete-original                   \
+  --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/pk-update-icon.desktop
 
 for i in pk-application pk-update-viewer pk-install-file pk-transaction-viewer pk-prefs pk-repo ; do
@@ -118,10 +118,13 @@ fi
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
-%{_datadir}/gnome/autostart/gnome-pk-update-icon.desktop
+%{_sysconfdir}/xdg/autostart/pk-update-icon.desktop
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Tue Mar 18 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-4
+- move pk-update-icon.desktop to /etc/xdg/autostart/
+
 * Thu Mar 13 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-3
 - symlink pk-install-file to system-install-packages
 
