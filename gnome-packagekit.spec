@@ -1,10 +1,10 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.9
+%define packagekit_version       0.1.10
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   4%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -39,6 +39,7 @@ BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: libsexy-devel
 BuildRequires: PackageKit-devel = %{packagekit_version}
+BuildRequires: PolicyKit-gnome-devel
 
 %description
 packagekit-gnome provides session applications for the PackageKit API.
@@ -122,6 +123,10 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Fri Mar 28 2008 Bill Nottingham <notting@redhat.com> - 0.1.10-1
+- update to 0.1.10
+- add PK-gnome-devel build requirement
+
 * Tue Mar 18 2008 Robin Norwood <rnorwood@redhat.com> - 0.1.9-4
 - move pk-update-icon.desktop to /etc/xdg/autostart/
 
