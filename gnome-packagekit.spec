@@ -1,5 +1,5 @@
 %define dbus_version 0.61
-%define packagekit_version       0.1.10
+%define packagekit_version       0.1.11
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
@@ -11,6 +11,8 @@ URL:       http://www.packagekit.org
 Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
+# handle failed restarts a little better
+Patch1:	   ck-multi.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
@@ -49,6 +51,7 @@ removing packages on your system.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1 -b .ck-multi
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -123,6 +126,9 @@ fi
 %{_datadir}/applications/pk-*.desktop
 
 %changelog
+* Sat Apr  5 2008 Matthias Clasen  <mclasen@redhat.com> - 0.1.11-1
+- Update to 0.1.11
+
 * Fri Mar 28 2008 Bill Nottingham <notting@redhat.com> - 0.1.10-1
 - update to 0.1.10
 - add PK-gnome-devel build requirement
