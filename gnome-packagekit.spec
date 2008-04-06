@@ -65,9 +65,9 @@ unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
-  $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/pk-update-icon.desktop
+  $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/gpk-update-icon.desktop
 
-for i in pk-application pk-update-viewer pk-install-file pk-transaction-viewer pk-prefs pk-repo ; do
+for i in gpk-application gpk-update-viewer gpk-install-file gpk-transaction-viewer gpk-prefs gpk-repo ; do
   desktop-file-install --delete-original                                \
     --dir=$RPM_BUILD_ROOT%{_datadir}/applications/                      \
     $RPM_BUILD_ROOT%{_datadir}/applications/$i.desktop
@@ -75,7 +75,7 @@ done
 
 %find_lang %name
 
-ln -s pk-install-file $RPM_BUILD_ROOT%{_bindir}/system-install-packages
+ln -s gpk-install-file $RPM_BUILD_ROOT%{_bindir}/system-install-packages
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -116,14 +116,14 @@ fi
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-%{_bindir}/pk-*
+%{_bindir}/gpk-*
 %{_bindir}/system-install-packages
 %{_datadir}/gnome-packagekit
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
-%{_sysconfdir}/xdg/autostart/pk-update-icon.desktop
-%{_datadir}/applications/pk-*.desktop
+%{_sysconfdir}/xdg/autostart/gpk-update-icon.desktop
+%{_datadir}/applications/gpk-*.desktop
 
 %changelog
 * Sat Apr  5 2008 Matthias Clasen  <mclasen@redhat.com> - 0.1.11-1
