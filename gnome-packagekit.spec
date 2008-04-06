@@ -67,7 +67,7 @@ desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/gpk-update-icon.desktop
 
-for i in gpk-application gpk-update-viewer gpk-install-file gpk-transaction-viewer gpk-prefs gpk-repo ; do
+for i in gpk-application gpk-update-viewer gpk-install-file gpk-log gpk-prefs gpk-repo ; do
   desktop-file-install --delete-original                                \
     --dir=$RPM_BUILD_ROOT%{_datadir}/applications/                      \
     $RPM_BUILD_ROOT%{_datadir}/applications/$i.desktop
