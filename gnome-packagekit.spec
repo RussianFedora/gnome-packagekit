@@ -4,11 +4,16 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
+Source1:   new-pk-package-available16.png
+Source2:   new-pk-package-available22.png
+Source3:   new-pk-package-available24.png
+Source4:   new-pk-package-available48.png
+Source5:   new-pk-package-available.svg
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 # handle failed restarts a little better
@@ -76,6 +81,12 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
+install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/16x16/status/pk-package-available.png
+install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/22x22/status/pk-package-available.png
+install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/24x24/status/pk-package-available.png
+install %{SOURCE4} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/48x48/status/pk-package-available.png
+install %{SOURCE5} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/scalable/status/pk-package-available.png
+
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/gpk-update-icon.desktop
@@ -139,6 +150,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr  9 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.11-3
+- Pull in the new icons from upsteam from Mike Langlie.
+
 * Sat Apr  9 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.11-2
 - Fix a plethora of GUI bugs by pulling some fixes from upstream
 
