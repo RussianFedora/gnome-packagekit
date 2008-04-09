@@ -1,0 +1,33 @@
+commit 2e5c2f0cb7aaa4cffe72900af4ab49afbd98404a
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Wed Apr 9 01:30:56 2008 +0100
+
+    don't show the initial package when we are updating multiple packages
+
+diff --git a/src/gpk-common.c b/src/gpk-common.c
+index afef117..2861f87 100644
+--- a/src/gpk-common.c
++++ b/src/gpk-common.c
+@@ -1060,7 +1060,7 @@ gpk_role_enum_to_localised_present (PkRoleEnum role)
+ 		text = _("Refreshing package cache");
+ 		break;
+ 	case PK_ROLE_ENUM_UPDATE_PACKAGES:
+-		text = _("Updating package");
++		text = _("Updating packages");
+ 		break;
+ 	case PK_ROLE_ENUM_UPDATE_SYSTEM:
+ 		text = _("Updating system");
+diff --git a/src/gpk-watch.c b/src/gpk-watch.c
+index ee7b152..37a5818 100644
+--- a/src/gpk-watch.c
++++ b/src/gpk-watch.c
+@@ -699,7 +699,8 @@ gpk_watch_populate_menu_with_jobs (GpkWatch *watch, GtkMenu *menu)
+ 		localised_status = gpk_status_enum_to_localised_text (item->status);
+ 
+ 		icon_name = gpk_status_enum_to_icon_name (item->status);
+-		if (pk_strzero (item->package_id) == FALSE) {
++		if (!pk_strzero (item->package_id) &&
++		    item->role != PK_ROLE_ENUM_UPDATE_PACKAGES) {
+ 			package = gpk_package_get_name (item->package_id);
+ 			text = g_strdup_printf ("%s %s (%s)", localised_role, package, localised_status);
+ 			g_free (package);

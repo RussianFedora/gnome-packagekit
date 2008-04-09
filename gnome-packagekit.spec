@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -13,6 +13,13 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 # handle failed restarts a little better
 Patch1:	   ck-multi.patch
+# pull some UI fixes from upstream
+Patch2:	   gpk-select-all.patch
+Patch3:	   gpk-select-all-hide-more.patch
+Patch4:	   gpk-dont-show-initial-package.patch
+Patch5:	   gpk-dont-show-refresh-when-update-packages.patch
+Patch6:	   gpk-show-icon-no-severity.patch
+Patch7:	   gpk-hide-icon-when--update-packages.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
@@ -52,6 +59,12 @@ removing packages on your system.
 %setup -q
 %patch0 -p1
 %patch1 -p1 -b .ck-multi
+%patch2 -p1 -b .gpk-select-all
+%patch3 -p1 -b .gpk-select-all-hide-more
+%patch4 -p1 -b .gpk-dont-show-initial-package
+%patch5 -p1 -b .gpk-dont-show-refresh-when-update-packages
+%patch6 -p1 -b .gpk-show-icon-no-severity
+%patch7 -p1 -b .gpk-hide-icon-when--update-packages
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -126,6 +139,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr  9 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.11-2
+- Fix a plethora of GUI bugs by pulling some fixes from upstream
+
 * Sat Apr  5 2008 Matthias Clasen  <mclasen@redhat.com> - 0.1.11-1
 - Update to 0.1.11
 
