@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   4%{?dist}
+Release:   5%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -37,6 +37,8 @@ Requires(pre):    GConf2
 Requires(post):   GConf2
 Requires(preun):  GConf2
 Requires(postun): scrollkeeper
+Obsoletes: pirut < 1.3.30-3 
+Provides:  pirut = 1.3.30-3
 
 BuildRequires: libgnomeui-devel
 BuildRequires: libglade2-devel
@@ -151,6 +153,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri Apr 11 2008 Jesse Keating <jkeating@redhat.com> - 0.1.11-5
+- Obsolete / Provide pirut.
+
 * Thu Apr 10 2008 Owen Taylor <otaylor@redhat.com> - 0.1.11-4
 - Make system-install-packages a wrapper script not a symlink
   so both files and package names work (#441674)
