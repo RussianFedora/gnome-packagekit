@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   %{packagekit_version}
-Release:   3%{?dist}
+Release:   4%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,6 +14,7 @@ Source2:   new-pk-package-available22.png
 Source3:   new-pk-package-available24.png
 Source4:   new-pk-package-available48.png
 Source5:   new-pk-package-available.svg
+Source6:   system-install-packages
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 # handle failed restarts a little better
@@ -87,6 +88,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/24x
 install %{SOURCE4} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/48x48/status/pk-package-available.png
 install %{SOURCE5} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/scalable/status/pk-package-available.png
 
+install %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
+
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/gpk-update-icon.desktop
@@ -98,8 +101,6 @@ for i in gpk-application gpk-update-viewer gpk-install-file gpk-log gpk-prefs gp
 done
 
 %find_lang %name
-
-ln -s gpk-install-file $RPM_BUILD_ROOT%{_bindir}/system-install-packages
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -150,6 +151,10 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Thu Apr 10 2008 Owen Taylor <otaylor@redhat.com> - 0.1.11-4
+- Make system-install-packages a wrapper script not a symlink
+  so both files and package names work (#441674)
+
 * Sat Apr  9 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.11-3
 - Pull in the new icons from upsteam from Mike Langlie.
 
