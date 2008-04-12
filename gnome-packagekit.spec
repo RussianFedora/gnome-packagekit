@@ -1,37 +1,24 @@
-%define dbus_version 0.61
-%define packagekit_version       0.1.11
+%define dbus_version            0.61
+%define packagekit_version      0.1.11
+%define alphatag		20080412git
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   %{packagekit_version}
-Release:   5%{?dist}
+Version:   0.1.12
+Release:   1.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
-Source1:   new-pk-package-available16.png
-Source2:   new-pk-package-available22.png
-Source3:   new-pk-package-available24.png
-Source4:   new-pk-package-available48.png
-Source5:   new-pk-package-available.svg
-Source6:   system-install-packages
+Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+Source1:   system-install-packages
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
-# handle failed restarts a little better
-Patch1:	   ck-multi.patch
-# pull some UI fixes from upstream
-Patch2:	   gpk-select-all.patch
-Patch3:	   gpk-select-all-hide-more.patch
-Patch4:	   gpk-dont-show-initial-package.patch
-Patch5:	   gpk-dont-show-refresh-when-update-packages.patch
-Patch6:	   gpk-show-icon-no-severity.patch
-Patch7:	   gpk-hide-icon-when--update-packages.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
 Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
-Requires:  PackageKit = %{packagekit_version}
+Requires:  PackageKit >= %{packagekit_version}
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
 Requires(post):   GConf2
@@ -55,7 +42,7 @@ BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: libsexy-devel
-BuildRequires: PackageKit-devel = %{packagekit_version}
+BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
 
 %description
@@ -66,13 +53,6 @@ removing packages on your system.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1 -b .ck-multi
-%patch2 -p1 -b .gpk-select-all
-%patch3 -p1 -b .gpk-select-all-hide-more
-%patch4 -p1 -b .gpk-dont-show-initial-package
-%patch5 -p1 -b .gpk-dont-show-refresh-when-update-packages
-%patch6 -p1 -b .gpk-show-icon-no-severity
-%patch7 -p1 -b .gpk-hide-icon-when--update-packages
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -84,13 +64,7 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/16x16/status/pk-package-available.png
-install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/22x22/status/pk-package-available.png
-install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/24x24/status/pk-package-available.png
-install %{SOURCE4} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/48x48/status/pk-package-available.png
-install %{SOURCE5} $RPM_BUILD_ROOT%{_datadir}/gnome-packagekit/icons/hicolor/scalable/status/pk-package-available.png
-
-install %{SOURCE6} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
+install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -153,6 +127,11 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr 12 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-1.20080412git
+- Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
+- Fixes that were cherry picked into this branch since 0.1.11 was released can be viewed at:
+  http://gitweb.freedesktop.org/?p=users/hughsient/gnome-packagekit.git;a=log;h=GNOME_PACKAGEKIT_0_1_X
+
 * Fri Apr 11 2008 Jesse Keating <jkeating@redhat.com> - 0.1.11-5
 - Obsolete / Provide pirut.
 
