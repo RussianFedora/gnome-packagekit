@@ -1,11 +1,11 @@
 %define dbus_version            0.61
 %define packagekit_version      0.1.11
-%define alphatag		20080412git
+%define alphatag		20080415git
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   1.%{?alphatag}%{?dist}
+Release:   2.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -127,6 +127,10 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr 12 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-2.20080415git
+- Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
+- Fixes include rh#442150, rh#442543, rh#442230, rh#441062 and more from upstream.
+
 * Sat Apr 12 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-1.20080412git
 - Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
 - Fixes that were cherry picked into this branch since 0.1.11 was released can be viewed at:
