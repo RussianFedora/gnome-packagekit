@@ -5,12 +5,13 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   2.%{?alphatag}%{?dist}
+Release:   3.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
 Source1:   system-install-packages
+Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 Requires:  gtk2 >= 2.12.0
@@ -65,6 +66,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
+install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -121,13 +123,17 @@ fi
 %{_bindir}/system-install-packages
 %{_datadir}/gnome-packagekit
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
+%{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
 %{_datadir}/omf/gnome-packagekit
 %{_sysconfdir}/xdg/autostart/gpk-update-icon.desktop
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
-* Sat Apr 12 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-2.20080415git
+* Sat Apr 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-3.20080415git
+- Add a man page for system-install-packages. Fixes rh#441673
+
+* Sat Apr 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-2.20080415git
 - Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
 - Fixes include rh#442150, rh#442543, rh#442230, rh#441062 and more from upstream.
 
