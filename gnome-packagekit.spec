@@ -1,11 +1,11 @@
 %define dbus_version            0.61
-%define packagekit_version      0.1.11
-%define alphatag		20080415git
+%define packagekit_version      0.1.11-4.20080416git
+%define alphatag		20080416git
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   3.%{?alphatag}%{?dist}
+Release:   4.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -66,7 +66,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
-install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
+install -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -130,6 +130,10 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr 16 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-4.20080416git
+- Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
+- Fixes rh#442398.
+
 * Sat Apr 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-3.20080415git
 - Add a man page for system-install-packages. Fixes rh#441673
 
