@@ -1,11 +1,11 @@
 %define dbus_version            0.61
-%define packagekit_version      0.1.12-4.20080416git
-%define alphatag		20080416git
+%define packagekit_version      0.1.12-5.20080423
+%define alphatag		20080423
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   6.%{?alphatag}%{?dist}
+Release:   7.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -52,7 +52,7 @@ There are several utilities designed for installing, updating and
 removing packages on your system.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{?alphatag}
 %patch0 -p1
 
 %build
@@ -122,6 +122,11 @@ fi
 %{_bindir}/gpk-*
 %{_bindir}/system-install-packages
 %{_datadir}/gnome-packagekit
+%{_datadir}/icons/hicolor/16x16/status/*.png
+%{_datadir}/icons/hicolor/22x22/status/*.png
+%{_datadir}/icons/hicolor/24x24/status/*.png
+%{_datadir}/icons/hicolor/48x48/status/*.png
+%{_datadir}/icons/hicolor/scalable/status/*.svg
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
@@ -130,6 +135,10 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr 23 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-7.20080416
+- Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
+- rh#443210, rh#438624, rh#436726, rh#443117, rh#442647 and rh#442998.
+
 * Wed Apr 23 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-6.20080416git
 - Correct the permissions on a man page to fix rh#443175.
 
