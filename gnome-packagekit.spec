@@ -5,7 +5,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   5.%{?alphatag}%{?dist}
+Release:   6.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -66,7 +66,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
-install -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
+install -m 0644 -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -130,6 +130,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Wed Apr 23 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-6.20080416git
+- Correct the permissions on a man page to fix rh#443175.
+
 * Sat Apr 16 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-5.20080416git
 - Build against the right version of PackageKit to make koji DTRT.
 
