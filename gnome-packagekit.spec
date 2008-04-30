@@ -1,11 +1,11 @@
 %define dbus_version            0.61
 %define packagekit_version      0.1.12-5.20080423
-%define alphatag		20080423
+%define alphatag		20080430
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   8.%{?alphatag}%{?dist}
+Release:   9.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -137,12 +137,16 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
-* Sat Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-8.20080416
+* Sat Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-9.20080430
+- Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
+- Fixes rh#441755, which is a release blocker.
+
+* Sat Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-8.20080423
 - Bodge in some of the GPG import code from master in an attempt to be able to
   install signatures for F9.
 - Fixes rh#443445, which is a release blocker.
 
-* Sat Apr 23 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-7.20080416
+* Sat Apr 23 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-7.20080423
 - Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
 - rh#443210, rh#438624, rh#436726, rh#443117, rh#442647 and rh#442998.
 
