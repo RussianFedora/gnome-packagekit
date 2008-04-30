@@ -5,7 +5,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   7.%{?alphatag}%{?dist}
+Release:   8.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,6 +14,7 @@ Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
+Patch1: gnome-packagekit-gpg-bodge.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
@@ -54,6 +55,7 @@ removing packages on your system.
 %prep
 %setup -q -n %{name}-%{version}-%{?alphatag}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -135,6 +137,11 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-8.20080416
+- Bodge in some of the GPG import code from master in an attempt to be able to
+  install signatures for F9.
+- Fixes rh#443445, which is a release blocker.
+
 * Sat Apr 23 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-7.20080416
 - Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
 - rh#443210, rh#438624, rh#436726, rh#443117, rh#442647 and rh#442998.

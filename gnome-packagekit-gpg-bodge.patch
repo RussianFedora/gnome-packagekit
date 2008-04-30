@@ -1,0 +1,228 @@
+diff --git a/src/gpk-application.c b/src/gpk-application.c
+index 559bfc4..320f569 100644
+--- a/src/gpk-application.c
++++ b/src/gpk-application.c
+@@ -118,6 +118,10 @@ enum
+ 	GROUPS_COLUMN_LAST
+ };
+ 
++static gchar *key_repository_name = NULL;
++static gchar *key_repo_id = NULL;
++static gchar *key_package_id = NULL;
++
+ static guint	     signals [LAST_SIGNAL] = { 0 };
+ 
+ G_DEFINE_TYPE (GpkApplication, gpk_application, G_TYPE_OBJECT)
+@@ -574,6 +578,39 @@ gpk_application_package_cb (PkClient *client, PkInfoEnum info, const gchar *pack
+ 	g_free (text);
+ }
+ 
++gboolean
++gpk_application_install_sig_cb (GpkApplication *application)
++{
++	gboolean ret;
++	GError *error = NULL;
++
++	g_return_val_if_fail (PK_IS_APPLICATION (application), FALSE);
++
++	pk_debug ("install sig %s", key_package_id);
++	ret = pk_client_reset (application->priv->client_action, &error);
++	if (!ret) {
++		pk_warning ("failed to reset client: %s", error->message);
++		g_error_free (error);
++		return FALSE;
++	}
++
++	// GIGANTIC HACK TO PRESERVE ABI
++	ret = pk_client_rollback (application->priv->client_action, key_package_id, &error);
++	if (!ret) {
++		pk_warning ("failed to install signature: %s", error->message);
++		if (strcmp (error->message, "org.freedesktop.packagekit.install no") == 0) {
++			gpk_application_error_message (application, _("You don't have the necessary privileges to install a signature"), NULL);
++		} else if (g_str_has_prefix (error->message, "org.freedesktop.packagekit.install")) {
++			/* canceled auth dialog, be silent */
++		} else {
++			/* ick, we failed so pretend we didn't do the action */
++			gpk_application_error_message (application, _("The signature could not be installed"), error->message);
++		}
++		g_error_free (error);
++	}
++	return FALSE;
++}
++
+ /**
+  * gpk_application_error_code_cb:
+  **/
+@@ -587,6 +624,33 @@ gpk_application_error_code_cb (PkClient *client, PkErrorCodeEnum code, const gch
+ 		return;
+ 	}
+ 
++	// GIGANTIC HACK
++	if (code == PK_ERROR_ENUM_GPG_FAILURE) {
++		GtkWidget *main_window;
++		GtkWidget *dialog;
++		PkPackageId *ident;
++		main_window = glade_xml_get_widget (application->priv->glade_xml, "window_manager");
++		ident = pk_package_id_new_from_string (key_package_id);
++		dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), GTK_DIALOG_DESTROY_WITH_PARENT,
++						 GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
++						 "Do you want to import key %s from %s for %s?",
++						 key_repo_id, key_repository_name, ident->name);
++		pk_package_id_free (ident);
++		gint result = gtk_dialog_run (GTK_DIALOG (dialog));
++		gtk_widget_destroy (dialog);
++		if (result == GTK_RESPONSE_YES) {
++			dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), GTK_DIALOG_DESTROY_WITH_PARENT,
++							 GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK,
++							 "Key will be imported, please try transaction again.\n"
++							 "This UI will be replaced in future versions of PackageKit"
++							 " - please don't file bugs as an update is being worked on...");
++			result = gtk_dialog_run (GTK_DIALOG (dialog));
++			gtk_widget_destroy (dialog);
++			g_idle_add ((GSourceFunc) gpk_application_install_sig_cb, application);
++			return;
++		}
++	}
++
+ 	gpk_application_error_message (application,
+ 				      gpk_error_enum_to_localised_text (code), details);
+ }
+@@ -1964,6 +2028,20 @@ pk_application_repo_detail_cb (PkClient *client, const gchar *repo_id,
+ }
+ 
+ /**
++ * pk_application_repo_signature_required_cb:
++ **/
++static void
++pk_application_repo_signature_required_cb (PkClient *client, const gchar *package_id, const gchar *repository_name,
++				       const gchar *key_url, const gchar *key_userid, const gchar *key_id,
++				       const gchar *key_fingerprint, const gchar *key_timestamp,
++				       PkSigTypeEnum type, GpkApplication *application)
++{
++	key_repository_name = g_strdup (repository_name);
++	key_repo_id = g_strdup (key_id);
++	key_package_id = g_strdup (package_id);
++}
++
++/**
+  * gpk_application_init:
+  **/
+ static void
+@@ -2037,6 +2115,8 @@ gpk_application_init (GpkApplication *application)
+ 			  G_CALLBACK (gpk_application_allow_cancel_cb), application);
+ 	g_signal_connect (application->priv->client_action, "repo-detail",
+ 			  G_CALLBACK (pk_application_repo_detail_cb), application);
++	g_signal_connect (application->priv->client_action, "repo-signature-required",
++			  G_CALLBACK (pk_application_repo_signature_required_cb), application);
+ 
+ 	application->priv->client_description = pk_client_new ();
+ 	g_signal_connect (application->priv->client_description, "description",
+diff --git a/src/gpk-update-viewer.c b/src/gpk-update-viewer.c
+index e7d32f2..3ffec9a 100644
+--- a/src/gpk-update-viewer.c
++++ b/src/gpk-update-viewer.c
+@@ -69,6 +69,10 @@ static int frame_counter = 0;
+ static int n_frames = 0;
+ static GdkPixbuf **frames = NULL;
+ 
++static gchar *key_repository_name = NULL;
++static gchar *key_repo_id = NULL;
++static gchar *key_package_id = NULL;
++
+ enum {
+ 	PREVIEW_COLUMN_ICON,
+ 	PREVIEW_COLUMN_TEXT,
+@@ -1498,6 +1502,29 @@ pk_updates_task_list_changed_cb (PkTaskList *tlist, gpointer data)
+ 	}
+ }
+ 
++gboolean
++gpk_updates_install_sig_cb (gpointer data)
++{
++	gboolean ret;
++	GError *error = NULL;
++
++	pk_debug ("install sig %s", key_package_id);
++	ret = pk_client_reset (client_action, &error);
++	if (!ret) {
++		pk_warning ("failed to reset client: %s", error->message);
++		g_error_free (error);
++		return FALSE;
++	}
++
++	// GIGANTIC HACK TO PRESERVE ABI
++	ret = pk_client_rollback (client_action, key_package_id, &error);
++	if (!ret) {
++		pk_warning ("failed to install signature: %s", error->message);
++		g_error_free (error);
++	}
++	return FALSE;
++}
++
+ /**
+  * pk_updates_error_code_cb:
+  **/
+@@ -1509,6 +1536,33 @@ pk_updates_error_code_cb (PkClient *client, PkErrorCodeEnum code, const gchar *d
+ 	gchar *title_bold;
+ 	gchar *details_safe;
+ 
++	// GIGANTIC HACK
++	if (code == PK_ERROR_ENUM_GPG_FAILURE) {
++		GtkWidget *main_window;
++		GtkWidget *dialog;
++		PkPackageId *ident;
++		main_window = glade_xml_get_widget (glade_xml, "window_updates");
++		ident = pk_package_id_new_from_string (key_package_id);
++		dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), GTK_DIALOG_DESTROY_WITH_PARENT,
++						 GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
++						 "Do you want to import key %s from %s for %s?",
++						 key_repo_id, key_repository_name, ident->name);
++		pk_package_id_free (ident);
++		gint result = gtk_dialog_run (GTK_DIALOG (dialog));
++		gtk_widget_destroy (dialog);
++		if (result == GTK_RESPONSE_YES) {
++			dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), GTK_DIALOG_DESTROY_WITH_PARENT,
++							 GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK,
++							 "Key will be imported, please try transaction again.\n"
++							 "This UI will be replaced in future versions of PackageKit"
++							 " - please don't file bugs as an update is being worked on...");
++			result = gtk_dialog_run (GTK_DIALOG (dialog));
++			gtk_widget_destroy (dialog);
++			g_idle_add ((GSourceFunc) gpk_updates_install_sig_cb, NULL);
++			return;
++		}
++	}
++
+ 	/* set bold title */
+ 	widget = glade_xml_get_widget (glade_xml, "label_error_title");
+ 	title = gpk_error_enum_to_localised_text (code);
+@@ -1716,6 +1770,20 @@ pk_updates_detail_popup_menu (GtkWidget *treeview, gpointer userdata)
+ }
+ 
+ /**
++ * pk_updates_repo_signature_required_cb:
++ **/
++static void
++pk_updates_repo_signature_required_cb (PkClient *client, const gchar *package_id, const gchar *repository_name,
++				       const gchar *key_url, const gchar *key_userid, const gchar *key_id,
++				       const gchar *key_fingerprint, const gchar *key_timestamp,
++				       PkSigTypeEnum type, gpointer userdata)
++{
++	key_repository_name = g_strdup (repository_name);
++	key_repo_id = g_strdup (key_id);
++	key_package_id = g_strdup (package_id);
++}
++
++/**
+  * main:
+  **/
+ int
+@@ -1809,6 +1877,8 @@ main (int argc, char *argv[])
+ 			  G_CALLBACK (pk_updates_error_code_cb), NULL);
+ 	g_signal_connect (client_action, "allow-cancel",
+ 			  G_CALLBACK (pk_updates_allow_cancel_cb), NULL);
++	g_signal_connect (client_action, "repo-signature-required",
++			  G_CALLBACK (pk_updates_repo_signature_required_cb), NULL);
+ 
+ 	notify = pk_notify_new ();
+ 	g_signal_connect (notify, "repo-list-changed",
