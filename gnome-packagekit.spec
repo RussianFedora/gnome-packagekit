@@ -5,7 +5,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   10.%{?alphatag}%{?dist}
+Release:   11.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -137,6 +137,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Wed Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-11.20080430
+- Actually build the correct tarball so the patches apply.
+
 * Wed Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-10.20080430
 - Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
 - Fixes rh#442223, which is a release blocker.

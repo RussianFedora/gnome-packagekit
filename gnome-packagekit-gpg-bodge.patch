@@ -234,7 +234,7 @@ index 578c70c..a5e1c35 100644
  	glade_xml = glade_xml_new (PK_DATA "/gpk-install-file.glade", NULL, NULL);
  	main_window = glade_xml_get_widget (glade_xml, "window_updates");
 diff --git a/src/gpk-update-viewer.c b/src/gpk-update-viewer.c
-index e7d32f2..3ffec9a 100644
+index e7d32f2..23c4808 100644
 --- a/src/gpk-update-viewer.c
 +++ b/src/gpk-update-viewer.c
 @@ -69,6 +69,10 @@ static int frame_counter = 0;
@@ -248,6 +248,32 @@ index e7d32f2..3ffec9a 100644
  enum {
  	PREVIEW_COLUMN_ICON,
  	PREVIEW_COLUMN_TEXT,
+@@ -1272,12 +1276,6 @@ pk_updates_finished_cb (PkClient *client, PkExitEnum exit, guint runtime, gpoint
+ 		pk_update_update_last_updated_time (client);
+ 	}
+ 
+-	/* we don't need to do anything here */
+-	if (role == PK_ROLE_ENUM_REFRESH_CACHE ||
+-	    role == PK_ROLE_ENUM_GET_UPDATE_DETAIL) {
+-		return;
+-	}
+-
+ 	/* stop the throbber */
+ 	pk_updates_preview_animation_stop ();
+ 
+@@ -1322,6 +1320,12 @@ pk_updates_finished_cb (PkClient *client, PkExitEnum exit, guint runtime, gpoint
+ 		}
+ 	}
+ 
++	/* HACK: force a new update -- fixed much better in master */
++	if (role == PK_ROLE_ENUM_REFRESH_CACHE) {
++		pk_button_overview_cb (NULL, NULL);
++		return;
++	}
++
+ 	populate_preview ();
+ }
+ 
 @@ -1498,6 +1502,29 @@ pk_updates_task_list_changed_cb (PkTaskList *tlist, gpointer data)
  	}
  }
