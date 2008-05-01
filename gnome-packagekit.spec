@@ -5,7 +5,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   11.%{?alphatag}%{?dist}
+Release:   12.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -137,6 +137,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri May 02 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-12.20080430
+- Add some more stuff to the GPG patch to fix point 3) of rh#444826
+
 * Wed Apr 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-11.20080430
 - Actually build the correct tarball so the patches apply.
 

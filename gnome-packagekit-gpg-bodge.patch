@@ -233,6 +233,115 @@ index 578c70c..a5e1c35 100644
  
  	glade_xml = glade_xml_new (PK_DATA "/gpk-install-file.glade", NULL, NULL);
  	main_window = glade_xml_get_widget (glade_xml, "window_updates");
+diff --git a/src/gpk-notify.c b/src/gpk-notify.c
+index d3406d6..747f28a 100644
+--- a/src/gpk-notify.c
++++ b/src/gpk-notify.c
+@@ -74,6 +74,10 @@ struct GpkNotifyPrivate
+ 
+ G_DEFINE_TYPE (GpkNotify, gpk_notify, G_TYPE_OBJECT)
+ 
++static gchar *key_repository_name = NULL;
++static gchar *key_repo_id = NULL;
++static gchar *key_package_id = NULL;
++
+ /**
+  * gpk_notify_class_init:
+  * @klass: The GpkNotifyClass
+@@ -800,6 +804,31 @@ out:
+ 	g_ptr_array_free (security_array, TRUE);
+ }
+ 
++gboolean
++gpk_notify_install_sig_cb (GpkNotify *notify)
++{
++	gboolean ret;
++	GError *error = NULL;
++
++	g_return_val_if_fail (GPK_IS_NOTIFY (notify), FALSE);
++
++	pk_debug ("install sig %s", key_package_id);
++	ret = pk_client_reset (notify->priv->client_update_system, &error);
++	if (!ret) {
++		pk_warning ("failed to reset client: %s", error->message);
++		g_error_free (error);
++		return FALSE;
++	}
++
++	// GIGANTIC HACK TO PRESERVE ABI
++	ret = pk_client_rollback (notify->priv->client_update_system, key_package_id, &error);
++	if (!ret) {
++		pk_warning ("failed to install signature: %s", error->message);
++		g_error_free (error);
++	}
++	return FALSE;
++}
++
+ /**
+  * gpk_notify_error_code_cb:
+  **/
+@@ -810,6 +839,31 @@ gpk_notify_error_code_cb (PkClient *client, PkErrorCodeEnum error_code, const gc
+ 
+ 	g_return_if_fail (GPK_IS_NOTIFY (notify));
+ 
++	// GIGANTIC HACK
++	if (error_code == PK_ERROR_ENUM_GPG_FAILURE) {
++		GtkWidget *dialog;
++		PkPackageId *ident;
++		ident = pk_package_id_new_from_string (key_package_id);
++		dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
++						 GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
++						 "Do you want to import key %s from %s for %s?",
++						 key_repo_id, key_repository_name, ident->name);
++		pk_package_id_free (ident);
++		gint result = gtk_dialog_run (GTK_DIALOG (dialog));
++		gtk_widget_destroy (dialog);
++		if (result == GTK_RESPONSE_YES) {
++			dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
++							 GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK,
++							 "Key will be imported, please try transaction again.\n"
++							 "This UI will be replaced in future versions of PackageKit"
++							 " - please don't file bugs as an update is being worked on...");
++			result = gtk_dialog_run (GTK_DIALOG (dialog));
++			gtk_widget_destroy (dialog);
++			g_idle_add ((GSourceFunc) gpk_notify_install_sig_cb, notify);
++			return;
++		}
++	}
++
+ 	title = gpk_error_enum_to_localised_text (error_code);
+ 
+ 	/* ignore some errors */
+@@ -1043,6 +1097,20 @@ gpk_notify_smart_icon_notify_button (GpkSmartIcon *sicon, GpkNotifyButton button
+ }
+ 
+ /**
++ * pk_notify_repo_signature_required_cb:
++ **/
++static void
++pk_notify_repo_signature_required_cb (PkClient *client, const gchar *package_id, const gchar *repository_name,
++				       const gchar *key_url, const gchar *key_userid, const gchar *key_id,
++				       const gchar *key_fingerprint, const gchar *key_timestamp,
++				       PkSigTypeEnum type, GpkNotify *notify)
++{
++	key_repository_name = g_strdup (repository_name);
++	key_repo_id = g_strdup (key_id);
++	key_package_id = g_strdup (package_id);
++}
++
++/**
+  * gpk_notify_init:
+  * @notify: This class instance
+  **/
+@@ -1087,6 +1155,8 @@ gpk_notify_init (GpkNotify *notify)
+ 			  G_CALLBACK (gpk_notify_update_system_finished_cb), notify);
+ 	g_signal_connect (notify->priv->client_update_system, "error-code",
+ 			  G_CALLBACK (gpk_notify_error_code_cb), notify);
++	g_signal_connect (notify->priv->client_update_system, "repo-signature-required",
++			  G_CALLBACK (pk_notify_repo_signature_required_cb), notify);
+ 
+ 	notify->priv->notify = pk_notify_new ();
+ 	g_signal_connect (notify->priv->notify, "updates-changed",
 diff --git a/src/gpk-update-viewer.c b/src/gpk-update-viewer.c
 index e7d32f2..23c4808 100644
 --- a/src/gpk-update-viewer.c
