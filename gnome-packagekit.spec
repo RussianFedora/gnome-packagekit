@@ -1,11 +1,11 @@
 %define dbus_version            0.61
 %define packagekit_version      0.1.12-4.20080416git
-%define alphatag		20080416git
+%define alphatag		20080506
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.1.12
-Release:   5.%{?alphatag}%{?dist}
+Version:   0.2.1
+Release:   1.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -52,7 +52,7 @@ There are several utilities designed for installing, updating and
 removing packages on your system.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{?alphatag}
 %patch0 -p1
 
 %build
@@ -66,7 +66,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
-install -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
+install -m 0644 -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -122,6 +122,11 @@ fi
 %{_bindir}/gpk-*
 %{_bindir}/system-install-packages
 %{_datadir}/gnome-packagekit
+%{_datadir}/icons/hicolor/16x16/status/*.png
+%{_datadir}/icons/hicolor/22x22/status/*.png
+%{_datadir}/icons/hicolor/24x24/status/*.png
+%{_datadir}/icons/hicolor/48x48/status/*.png
+%{_datadir}/icons/hicolor/scalable/status/*.svg
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
@@ -130,6 +135,12 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Tue May 06 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.1-1.20080506
+- Pull in the new snapshot from the unstable branch.
+
+* Tue May 06 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.0-1
+- Update to the latest _UNSTABLE_ upstream source
+
 * Sat Apr 16 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-5.20080416git
 - Build against the right version of PackageKit to make koji DTRT.
 
