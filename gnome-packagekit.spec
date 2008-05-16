@@ -1,11 +1,11 @@
 %define dbus_version            0.61
 %define packagekit_version      0.1.12-5.20080423
-%define alphatag		20080430
+%define alphatag		20080516
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   12.%{?alphatag}%{?dist}
+Release:   13.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -137,6 +137,11 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri May 16 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-13.20080516
+- Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
+- Fixes rh#446739, where we make the visited link status in gpk-update-viewer only mark the
+  correct URI as visited, rather than all of them. 
+
 * Fri May 02 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-12.20080430
 - Add some more stuff to the GPG patch to fix point 3) of rh#444826
 
