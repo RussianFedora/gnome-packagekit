@@ -1,0 +1,186 @@
+diff --git a/src/gpk-application-main.c b/src/gpk-application-main.c
+index 14e81a8..9dedd4c 100644
+--- a/src/gpk-application-main.c
++++ b/src/gpk-application-main.c
+@@ -33,6 +33,7 @@
+ 
+ #include <pk-debug.h>
+ #include "gpk-application.h"
++#include "gpk-common.h"
+ 
+ /**
+  * gpk_application_close_cb
+@@ -54,6 +55,7 @@ int
+ main (int argc, char *argv[])
+ {
+ 	GMainLoop *loop;
++	gboolean ret;
+ 	gboolean verbose = FALSE;
+ 	gboolean program_version = FALSE;
+ 	GpkApplication *application = NULL;
+@@ -93,6 +95,12 @@ main (int argc, char *argv[])
+ 	pk_debug_init (verbose);
+ 	gtk_init (&argc, &argv);
+ 
++	/* are we running privileged */
++	ret = gpk_check_privileged_user ();
++	if (!ret) {
++		return 1;
++	}
++
+ 	/* create a new application object */
+ 	application = gpk_application_new ();
+ 	g_signal_connect (application, "action-close",
+diff --git a/src/gpk-common.c b/src/gpk-common.c
+index 9240ac6..d48fe79 100644
+--- a/src/gpk-common.c
++++ b/src/gpk-common.c
+@@ -26,6 +26,7 @@
+ #include <math.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <sys/types.h>
+ #include <gtk/gtk.h>
+ #include <dbus/dbus-glib.h>
+ 
+@@ -164,6 +165,35 @@ static PkEnumMatch enum_message_icon_name[] = {
+ 	{0, NULL}
+ };
+ 
++/**
++ * gpk_check_privileged_user
++ **/
++gboolean
++gpk_check_privileged_user (void)
++{
++	guint uid;
++	gchar *message;
++	const gchar *title;
++
++	uid = getuid ();
++	if (uid == 0) {
++		GtkWidget *d;
++		title = _("This application is running as a privileged user");
++		message = g_strjoin ("\n",
++				     _("Running graphical applications as a privileged user should be avoided for security reasons."),
++				     _("PackageKit applications are security sensitive and therefore this application will now close."), NULL);
++		d = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
++					    GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "%s", title);
++		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (d), "%s", message);
++		gtk_dialog_run (GTK_DIALOG(d));
++		gtk_widget_destroy (d);
++		g_free (message);
++		pk_warning ("uid=%i so closing", uid);
++		return FALSE;
++	}
++	return TRUE;
++}
++
+ static gboolean
+ try_system_restart (DBusGProxy *proxy, GError **error)
+ {
+diff --git a/src/gpk-common.h b/src/gpk-common.h
+index c53370d..72af328 100644
+--- a/src/gpk-common.h
++++ b/src/gpk-common.h
+@@ -102,6 +102,7 @@ gchar		*gpk_update_enum_to_localised_text	(PkInfoEnum	 info,
+ 							 guint		 number)
+ 							 G_GNUC_CONST;
+ gchar		*gpk_time_to_localised_string		(guint		 time_secs);
++gboolean	 gpk_check_privileged_user		(void);
+ 
+ G_END_DECLS
+ 
+diff --git a/src/gpk-install-file.c b/src/gpk-install-file.c
+index a5e1c35..435b7ed 100644
+--- a/src/gpk-install-file.c
++++ b/src/gpk-install-file.c
+@@ -316,6 +316,12 @@ main (int argc, char *argv[])
+ 	pk_debug_init (verbose);
+ 	gtk_init (&argc, &argv);
+ 
++	/* are we running privileged */
++	ret = gpk_check_privileged_user ();
++	if (!ret) {
++		return 1;
++	}
++
+         /* add application specific icons to search path */
+         gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+                                            PK_DATA G_DIR_SEPARATOR_S "icons");
+diff --git a/src/gpk-install-package.c b/src/gpk-install-package.c
+index 92d10c9..d49f82d 100644
+--- a/src/gpk-install-package.c
++++ b/src/gpk-install-package.c
+@@ -155,6 +155,12 @@ main (int argc, char *argv[])
+ 	pk_debug_init (verbose);
+ 	gtk_init (&argc, &argv);
+ 
++	/* are we running privileged */
++	ret = gpk_check_privileged_user ();
++	if (!ret) {
++		return 1;
++	}
++
+         /* add application specific icons to search path */
+         gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+                                            PK_DATA G_DIR_SEPARATOR_S "icons");
+diff --git a/src/gpk-repo.c b/src/gpk-repo.c
+index 75ed7d0..44c5d92 100644
+--- a/src/gpk-repo.c
++++ b/src/gpk-repo.c
+@@ -312,6 +312,12 @@ main (int argc, char *argv[])
+ 	pk_debug_init (verbose);
+ 	gtk_init (&argc, &argv);
+ 
++	/* are we running privileged */
++	ret = gpk_check_privileged_user ();
++	if (!ret) {
++		return 1;
++	}
++
+ 	loop = g_main_loop_new (NULL, FALSE);
+ 
+ 	client = pk_client_new ();
+diff --git a/src/gpk-update-icon.c b/src/gpk-update-icon.c
+index 900e451..8209e0b 100644
+--- a/src/gpk-update-icon.c
++++ b/src/gpk-update-icon.c
+@@ -39,6 +39,7 @@
+ #include "gpk-notify.h"
+ #include "gpk-watch.h"
+ #include "gpk-interface.h"
++#include "gpk-common.h"
+ 
+ /**
+  * gpk_object_register:
+@@ -152,6 +153,12 @@ main (int argc, char *argv[])
+ 	pk_debug_init (verbose);
+ 	gtk_init (&argc, &argv);
+ 
++	/* are we running privileged */
++	ret = gpk_check_privileged_user ();
++	if (!ret) {
++		return 1;
++	}
++
+ 	/* add application specific icons to search path */
+ 	gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+                                            PK_DATA G_DIR_SEPARATOR_S "icons");
+diff --git a/src/gpk-update-viewer.c b/src/gpk-update-viewer.c
+index 23c4808..97255f9 100644
+--- a/src/gpk-update-viewer.c
++++ b/src/gpk-update-viewer.c
+@@ -1839,6 +1839,12 @@ main (int argc, char *argv[])
+ 	pk_debug_init (verbose);
+ 	gtk_init (&argc, &argv);
+ 
++	/* are we running privileged */
++	ret = gpk_check_privileged_user ();
++	if (!ret) {
++		return 1;
++	}
++
+ 	/* add application specific icons to search path */
+ 	gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+ 					   PK_DATA G_DIR_SEPARATOR_S "icons");

@@ -5,7 +5,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.1.12
-Release:   13.%{?alphatag}%{?dist}
+Release:   14.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -15,6 +15,7 @@ Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 Patch1: gnome-packagekit-gpg-bodge.patch
+Patch2: gnome-packagekit-check-root.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
@@ -56,6 +57,7 @@ removing packages on your system.
 %setup -q -n %{name}-%{version}-%{?alphatag}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -137,6 +139,13 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon May 19 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-14.20080516
+- Prevent the GTK GUI tools from being run as root as PolicyKit authentication
+  will not work, and using GTK in this way so may be insecure.
+- This will also reduce to zero the number of bugs I'm getting about the gpk-*
+  tools not working when logged into as the root account.
+  Addresses: #447266, #446440 and a ton of duplicates!
+
 * Fri May 16 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-13.20080516
 - Pull in the new snapshot from the stable GNOME_PACKAGEKIT_0_1_X branch.
 - Fixes rh#446739, where we make the visited link status in gpk-update-viewer only mark the
