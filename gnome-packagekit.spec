@@ -1,11 +1,11 @@
 %define dbus_version            0.61
 %define packagekit_version      0.1.12-4.20080416git
-%define alphatag		20080519
+%define alphatag		20080529
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.2
-Release:   1.%{?alphatag}%{?dist}
+Release:   2.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -137,6 +137,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Thu May 29 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.2-2.20080529
+- Pull in a new snapshot from the unstable branch.
+
 * Mon May 19 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.2-1.20080519
 - Pull in a new snapshot from the unstable branch.
 
