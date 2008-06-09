@@ -1,11 +1,11 @@
 %define dbus_version            0.61
-%define packagekit_version      0.1.12-4.20080416git
-%define alphatag		20080529
+%define packagekit_version      0.2.3-1.20080609
+%define alphatag                20080609
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.2.2
-Release:   2.%{?alphatag}%{?dist}
+Version:   0.2.3
+Release:   1.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -21,6 +21,7 @@ Requires:  unique >= 0.9.4
 Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
+Requires:  shared-mime-info
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
 Requires(post):   GConf2
@@ -43,6 +44,7 @@ BuildRequires: libtool
 BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
+BuildRequires: gnome-doc-utils
 BuildRequires: libsexy-devel
 BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
@@ -94,7 +96,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-/usr/bin/update-desktop-database %{_datadir}/applications
+update-desktop-database %{_datadir}/applications
+update-mime-database %{_datadir}/mime
 
 %pre
 if [ "$1" -gt 1 ]; then
@@ -116,7 +119,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-/usr/bin/update-desktop-database %{_datadir}/applications
+update-desktop-database %{_datadir}/applications
+update-mime-database %{_datadir}/mime
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -137,6 +141,9 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Jun 09 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-1.20080609
+- Pull in a new snapshot from the unstable branch.
+
 * Thu May 29 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.2-2.20080529
 - Pull in a new snapshot from the unstable branch.
 
