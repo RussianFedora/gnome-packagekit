@@ -1,11 +1,11 @@
 %define dbus_version            0.61
-%define packagekit_version      0.2.3-1.20080609
-%define alphatag                20080609
+%define packagekit_version      0.2.3-3.20080611
+%define alphatag                20080611
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
-Release:   2.%{?alphatag}%{?dist}
+Release:   3.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -21,6 +21,7 @@ Requires:  unique >= 0.9.4
 Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
+Requires:  PackageKit-libs >= %{packagekit_version}
 Requires:  shared-mime-info
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
@@ -142,6 +143,11 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Jun 11 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-3.20080611
+- Pull in a new snapshot from the unstable branch.
+- New interface for gpk-application - one that doesn't suck
+- UI fixes for gpk-repo and gpk-update-viewer
+
 * Mon Jun 09 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-2.20080609
 - Add intltool to the BR.
 
