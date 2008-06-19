@@ -1,11 +1,11 @@
 %define dbus_version            0.61
 %define packagekit_version      0.2.3-3.20080611
-%define alphatag                20080611
+%define alphatag                20080618
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
-Release:   3.%{?alphatag}%{?dist}
+Release:   4.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -143,6 +143,10 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Wed Jun 18 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-4.20080618
+- Pull in a new snapshot from the unstable branch.
+- Fixes a problem when installing with the DBUS session interface
+
 * Mon Jun 11 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-3.20080611
 - Pull in a new snapshot from the unstable branch.
 - New interface for gpk-application - one that doesn't suck
