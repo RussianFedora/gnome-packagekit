@@ -1,12 +1,12 @@
 %define dbus_version            0.61
-%define packagekit_version      0.1.12-5.20080423
+%define packagekit_version      0.2.3
 #%define alphatag		20080516
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
 #Release:   1.%{?alphatag}%{?dist}
-Release:   1.%{?dist}
+Release:   2.%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -143,6 +143,9 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri Jul 04 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-2
+- Require PackageKit 0.2.3 to keep koji happy.
+
 * Fri Jul 04 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-1
 - New upstream stable version (API break from 0.1.12).
  * UI fixes and new functionality
