@@ -1,33 +1,36 @@
 %define dbus_version            0.61
 %define packagekit_version      0.1.12-5.20080423
-%define alphatag		20080516
+#%define alphatag		20080516
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.1.12
-Release:   14.%{?alphatag}%{?dist}
+Version:   0.2.3
+#Release:   1.%{?alphatag}%{?dist}
+Release:   1.%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+#Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Patch0:    gnome-packagekit-enable-kde.patch
-Patch1: gnome-packagekit-gpg-bodge.patch
-Patch2: gnome-packagekit-check-root.patch
+#Patch0:    gnome-packagekit-enable-kde.patch
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
+Requires:  unique >= 0.9.4
 Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
+Requires:  PackageKit-libs >= %{packagekit_version}
+Requires:  shared-mime-info
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
 Requires(post):   GConf2
 Requires(preun):  GConf2
 Requires(postun): scrollkeeper
-Obsoletes: pirut < 1.3.30-3 
+Obsoletes: pirut < 1.3.30-3
 Provides:  pirut = 1.3.30-3
 
 BuildRequires: libgnomeui-devel
@@ -54,10 +57,9 @@ There are several utilities designed for installing, updating and
 removing packages on your system.
 
 %prep
-%setup -q -n %{name}-%{version}-%{?alphatag}
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%setup -q
+#%setup -q -n %{name}-%{version}-%{?alphatag}
+#%patch0 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -96,7 +98,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-/usr/bin/update-desktop-database %{_datadir}/applications
+update-desktop-database %{_datadir}/applications
+update-mime-database %{_datadir}/mime
 
 %pre
 if [ "$1" -gt 1 ]; then
@@ -118,7 +121,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-/usr/bin/update-desktop-database %{_datadir}/applications
+update-desktop-database %{_datadir}/applications
+update-mime-database %{_datadir}/mime
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -139,6 +143,12 @@ fi
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri Jul 04 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-1
+- New upstream stable version (API break from 0.1.12).
+ * UI fixes and new functionality
+ * Multiple actions in one transaction
+- Fixes many bugs with the 0.1.x codebase.
+
 * Mon May 19 2008 Richard Hughes  <rhughes@redhat.com> - 0.1.12-14.20080516
 - Prevent the GTK GUI tools from being run as root as PolicyKit authentication
   will not work, and using GTK in this way so may be insecure.
