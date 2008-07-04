@@ -6,7 +6,7 @@ Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
 #Release:   1.%{?alphatag}%{?dist}
-Release:   2.%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -143,6 +143,9 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri Jul 04 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-3
+- Fix the .. release string.
+
 * Fri Jul 04 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-2
 - Require PackageKit 0.2.3 to keep koji happy.
 
