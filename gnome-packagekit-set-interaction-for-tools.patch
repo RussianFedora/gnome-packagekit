@@ -1,0 +1,67 @@
+commit 3744304f6daff0555736d8577cdc5b9212d8c54d
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Tue Jul 8 00:37:42 2008 +0100
+
+    bugfix: set the interaction of the GClient to always when we are using a helper
+
+diff --git a/src/gpk-install-catalog.c b/src/gpk-install-catalog.c
+index 2771cf9..46b68b3 100644
+--- a/src/gpk-install-catalog.c
++++ b/src/gpk-install-catalog.c
+@@ -86,7 +86,7 @@ main (int argc, char *argv[])
+ 	/* find the file list */
+ 	files = gpk_convert_argv_to_strv (argv);
+ 	gclient = gpk_client_new ();
+-
++	gpk_client_set_interaction (gclient, GPK_CLIENT_INTERACT_ALWAYS);
+ 	/* install all the catalogs */
+ 	ret = gpk_client_install_catalogs (gclient, files, NULL);
+ 
+diff --git a/src/gpk-install-local-file.c b/src/gpk-install-local-file.c
+index f006426..0ea8c26 100644
+--- a/src/gpk-install-local-file.c
++++ b/src/gpk-install-local-file.c
+@@ -85,6 +85,7 @@ main (int argc, char *argv[])
+ 
+ 	error = NULL;
+ 	gclient = gpk_client_new ();
++	gpk_client_set_interaction (gclient, GPK_CLIENT_INTERACT_ALWAYS);
+ 	files = gpk_convert_argv_to_strv (argv);
+ 	ret = gpk_client_install_local_files (gclient, files, NULL);
+ 	g_strfreev (files);
+diff --git a/src/gpk-install-mime-type.c b/src/gpk-install-mime-type.c
+index 16a6b30..7f8184a 100644
+--- a/src/gpk-install-mime-type.c
++++ b/src/gpk-install-mime-type.c
+@@ -89,6 +89,7 @@ main (int argc, char *argv[])
+ 
+ 	error = NULL;
+ 	gclient = gpk_client_new ();
++	gpk_client_set_interaction (gclient, GPK_CLIENT_INTERACT_ALWAYS);
+ 	ret = gpk_client_install_mime_type (gclient, argv[1], NULL);
+ 	g_object_unref (gclient);
+ 
+diff --git a/src/gpk-install-package-name.c b/src/gpk-install-package-name.c
+index 8e17c10..c9d4f9a 100644
+--- a/src/gpk-install-package-name.c
++++ b/src/gpk-install-package-name.c
+@@ -85,6 +85,7 @@ main (int argc, char *argv[])
+ 
+ 	error = NULL;
+ 	gclient = gpk_client_new ();
++	gpk_client_set_interaction (gclient, GPK_CLIENT_INTERACT_ALWAYS);
+ 	packages = gpk_convert_argv_to_strv (argv);
+ 	ret = gpk_client_install_package_names (gclient, packages, NULL);
+ 	g_strfreev (packages);
+diff --git a/src/gpk-install-provide-file.c b/src/gpk-install-provide-file.c
+index a03ea57..d1948af 100644
+--- a/src/gpk-install-provide-file.c
++++ b/src/gpk-install-provide-file.c
+@@ -89,6 +89,7 @@ main (int argc, char *argv[])
+ 
+ 	error = NULL;
+ 	gclient = gpk_client_new ();
++	gpk_client_set_interaction (gclient, GPK_CLIENT_INTERACT_ALWAYS);
+ 	ret = gpk_client_install_provide_file (gclient, argv[1], NULL);
+ 	g_object_unref (gclient);
+ 
