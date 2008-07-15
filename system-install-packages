@@ -29,6 +29,6 @@ if have_local and have_remote:
     sys.exit(1)
 
 if have_local:
-    os.execv("/usr/bin/gpk-install-file", ["gpk-install-file"] + specified)
+    os.execv("/usr/bin/gpk-install-local-file", ["gpk-install-local-file"] + specified)
 else:
-    os.execv("/usr/bin/gpk-install-package", ["gpk-install-file"] + specified)
+    os.execv("/usr/bin/gpk-install-package-name", ["gpk-install-package-name"] + specified)

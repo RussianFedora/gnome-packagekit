@@ -6,7 +6,7 @@ Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
 #Release:   1.%{?alphatag}%{?dist}
-Release:   4%{?dist}
+Release:   5%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -144,6 +144,10 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Tue Jul 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-5
+- Correct the name of the executables called in system-install-packages.
+  Fixes rh#455390
+
 * Tue Jul 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-4
 - Set the GUI interaction mode in the gpk-install-foo tools
   so the dialog does not auto-close when we've asked for auth.
