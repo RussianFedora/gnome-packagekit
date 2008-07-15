@@ -6,7 +6,7 @@ Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
 #Release:   1.%{?alphatag}%{?dist}
-Release:   5%{?dist}
+Release:   6%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -48,9 +48,12 @@ BuildRequires: libtool
 BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
+BuildRequires: gnome-doc-utils
 BuildRequires: libsexy-devel
 BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
+BuildRequires: unique-devel
+BuildRequires: intltool
 
 %description
 packagekit-gnome provides session applications for the PackageKit API.
@@ -144,6 +147,9 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Tue Jul 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-6
+- Add intltool to the BR.
+
 * Tue Jul 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-5
 - Correct the name of the executables called in system-install-packages.
   Fixes rh#455390
