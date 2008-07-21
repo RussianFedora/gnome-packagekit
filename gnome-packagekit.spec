@@ -6,7 +6,7 @@ Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
 #Release:   1.%{?alphatag}%{?dist}
-Release:   6%{?dist}
+Release:   7%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -147,6 +147,9 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Jul 21 2008 Adel Gadllah <adel.gadllah@gmail.com> - 0.2.3-7
+- Rebuild against new PackageKit to pick up correct dep
+
 * Tue Jul 15 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-6
 - Add intltool to the BR.
 
