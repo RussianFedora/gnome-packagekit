@@ -6,7 +6,7 @@ Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.3
 #Release:   1.%{?alphatag}%{?dist}
-Release:   7%{?dist}
+Release:   8%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -102,8 +102,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-update-desktop-database %{_datadir}/applications
-update-mime-database %{_datadir}/mime
+update-desktop-database %{_datadir}/applications &> /dev/null || :
+update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %pre
 if [ "$1" -gt 1 ]; then
@@ -147,6 +147,9 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Jul 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-8
+- Silence output of update-desktop-database and update-mime-database
+
 * Mon Jul 21 2008 Adel Gadllah <adel.gadllah@gmail.com> - 0.2.3-7
 - Rebuild against new PackageKit to pick up correct dep
 
