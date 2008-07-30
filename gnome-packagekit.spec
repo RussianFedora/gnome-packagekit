@@ -1,19 +1,22 @@
 %define dbus_version            0.61
 %define packagekit_version      0.2.3-3.20080611
-%define alphatag                20080618
+#%define alphatag                20080618
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.2.3
-Release:   4.%{?alphatag}%{?dist}
+Version:   0.2.4
+#Release:   4.%{?alphatag}%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+#Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
+
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
@@ -28,7 +31,7 @@ Requires(pre):    GConf2
 Requires(post):   GConf2
 Requires(preun):  GConf2
 Requires(postun): scrollkeeper
-Obsoletes: pirut < 1.3.30-3 
+Obsoletes: pirut < 1.3.30-3
 Provides:  pirut = 1.3.30-3
 
 BuildRequires: libgnomeui-devel
@@ -58,7 +61,8 @@ There are several utilities designed for installing, updating and
 removing packages on your system.
 
 %prep
-%setup -q -n %{name}-%{version}-%{?alphatag}
+%setup -q
+#%setup -q -n %{name}-%{version}-%{?alphatag}
 %patch0 -p1
 
 %build
@@ -98,8 +102,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-update-desktop-database %{_datadir}/applications
-update-mime-database %{_datadir}/mime
+update-desktop-database %{_datadir}/applications &> /dev/null || :
+update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %pre
 if [ "$1" -gt 1 ]; then
@@ -121,8 +125,8 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor
 fi
-update-desktop-database %{_datadir}/applications
-update-mime-database %{_datadir}/mime
+update-desktop-database %{_datadir}/applications &> /dev/null || :
+update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -143,6 +147,9 @@ update-mime-database %{_datadir}/mime
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Tue Jul 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.4-1
+- New upstream version, only bugfixes.
+
 * Wed Jun 18 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.3-4.20080618
 - Pull in a new snapshot from the unstable branch.
 - Fixes a problem when installing with the DBUS session interface
