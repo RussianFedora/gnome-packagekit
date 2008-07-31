@@ -6,7 +6,7 @@ Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.4
 #Release:   4.%{?alphatag}%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -147,6 +147,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Tue Jul 31 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.4-2
+- Rebuild for libunique ABI break.
+
 * Tue Jul 30 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.4-1
 - New upstream version, only bugfixes.
 
