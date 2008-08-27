@@ -1,9 +1,9 @@
 %define dbus_version            0.61
-%define packagekit_version      0.2.3-3.20080611
+%define packagekit_version      0.3.1
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.0
+Version:   0.3.1
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -143,6 +143,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Aug 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.1-1
+- Update to newest upstream version.
+
 * Mon Aug 22 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.0-1
 - Update to newest upstream version.
 
