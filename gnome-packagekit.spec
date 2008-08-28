@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.1
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -143,7 +143,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
-* Wed Aug 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.1-2
+* Thu Aug 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.1-3
+- Bump because the PackageKit-devel rpm was empty.
+
+* Thu Aug 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.1-2
 - Bump as make chainbuild is broken, so we'll have to do this in two steps.
 
 * Mon Aug 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.1-1
