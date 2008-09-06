@@ -3,8 +3,8 @@
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.2.4
-Release:   2%{?dist}
+Version:   0.2.5
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -60,7 +60,6 @@ removing packages on your system.
 
 %prep
 %setup -q
-#%setup -q -n %{name}-%{version}-%{?alphatag}
 %patch0 -p1
 
 %build
@@ -145,6 +144,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Sat Sep 06 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.5-1
+- New upstream version, only bugfixes.
+
 * Mon Aug 04 2008 Robin Norwood <rnorwood@redhat.com> - 0.2.4-2
 - Fix Source0 URL.
 
