@@ -1,10 +1,10 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.1
+%define packagekit_version      0.3.2
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.1
-Release:   3%{?dist}
+Version:   0.3.2
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -143,6 +143,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Sep 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.2-1
+- Update to newest upstream version.
+
 * Thu Aug 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.1-3
 - Bump because the PackageKit-devel rpm was empty.
 
