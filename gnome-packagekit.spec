@@ -4,16 +4,16 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.2.5
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}-%{?alphatag}.tar.gz
 Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
+Patch1:    gnome-packagekit-fix-gtype.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -61,6 +61,7 @@ removing packages on your system.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -144,6 +145,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Sep 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.5-2
+- Fix a critical GType initialisation problem.
+
 * Sat Sep 06 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.5-1
 - New upstream version, only bugfixes.
 
