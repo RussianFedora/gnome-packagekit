@@ -1,9 +1,9 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.2
+%define packagekit_version      0.3.3
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.2
+Version:   0.3.3
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -143,6 +143,11 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Sep 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.3-1
+- Update to newest upstream version.
+- Supports collection install and remove in the UI
+- Add InstallGStreamerCodecs to the session interface
+
 * Mon Sep 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.2-1
 - Update to newest upstream version.
 
