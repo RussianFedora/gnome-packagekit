@@ -1,10 +1,10 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.3
+%define packagekit_version      0.3.4
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.3
-Release:   2%{?dist}
+Version:   0.3.4
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 
 # Upstream: 0f01d00cb0e03262766a2f60327adad91466a0b6
-Patch1:    pk-use-different-gpk-clients.patch
+# Patch1:    pk-use-different-gpk-clients.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -63,7 +63,7 @@ removing packages on your system.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -147,6 +147,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Sep 22 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.4-1
+- New upstream version
+
 * Wed Sep 17 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.3-2
 - Fix the interaction when the update check and the upgrade check are
   scheduled at the same time.
