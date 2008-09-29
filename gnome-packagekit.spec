@@ -1,9 +1,9 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.4
+%define packagekit_version      0.3.5
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.4
+Version:   0.3.5
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -54,9 +54,10 @@ BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
 BuildRequires: unique-devel
 BuildRequires: intltool
+BuildRequires: xorg-x11-proto-devel
 
 %description
-packagekit-gnome provides session applications for the PackageKit API.
+gnome-packagekit provides session applications for the PackageKit API.
 There are several utilities designed for installing, updating and
 removing packages on your system.
 
@@ -147,6 +148,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Sep 22 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.5-1
+- New upstream version
+
 * Mon Sep 22 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.4-1
 - New upstream version
 
