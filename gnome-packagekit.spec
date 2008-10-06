@@ -3,7 +3,7 @@
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.5
+Version:   0.3.6
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -148,6 +148,11 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Oct 06 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.6-1
+- New upstream version
+- Show vendor specific messages when we fail to find packages
+- Turn off hardware HAL integration
+
 * Mon Sep 22 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.5-1
 - New upstream version
 
