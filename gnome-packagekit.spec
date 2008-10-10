@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.6
-Release:   3%{?dist}
+Release:   4%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,8 +14,8 @@ Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 
-# Upstream: 0f01d00cb0e03262766a2f60327adad91466a0b6
-# Patch1:    pk-use-different-gpk-clients.patch
+# Upstream: 0f4e50d52c95164a1d987c42ca73cc386e51f951
+Patch1:    gpk-dont-get-updates-when-set-to-none.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -64,7 +64,7 @@ removing packages on your system.
 %prep
 %setup -q
 %patch0 -p1
-#%patch1 -p1
+%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -165,6 +165,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri Oct 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.6-4
+- Add a bugfix from upstream so we don't try to check for updates
+  when we've set to never. Fixes RH#461825.
+
 * Wed Oct  8 2008 Matthias Clasen  <mclasen@redhat.com> - 0.3.6-3
 - Another space-saving hack
 
