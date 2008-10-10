@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.6
-Release:   4%{?dist}
+Release:   5%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -165,6 +165,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Fri Oct 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.6-5
+- Bump
+
 * Fri Oct 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.6-4
 - Add a bugfix from upstream so we don't try to check for updates
   when we've set to never. Fixes RH#461825.
