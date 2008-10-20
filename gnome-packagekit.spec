@@ -1,9 +1,9 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.5
+%define packagekit_version      0.3.8
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.7
+Version:   0.3.8
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -152,11 +152,11 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_bindir}/gpk-*
 %{_bindir}/system-install-packages
 %{_datadir}/gnome-packagekit
-%{_datadir}/icons/hicolor/16x16/apps/*.png
-%{_datadir}/icons/hicolor/22x22/apps/*.png
-%{_datadir}/icons/hicolor/24x24/apps/*.png
-%{_datadir}/icons/hicolor/48x48/apps/*.png
-%{_datadir}/icons/hicolor/scalable/apps/*.svg
+%{_datadir}/icons/hicolor/16x16/*/*.png
+%{_datadir}/icons/hicolor/22x22/*/*.png
+%{_datadir}/icons/hicolor/24x24/*/*.png
+%{_datadir}/icons/hicolor/48x48/*/*.png
+%{_datadir}/icons/hicolor/scalable/*/*.svg
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
@@ -165,6 +165,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Oct 20 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.8-1
+- New upstream version
+
 * Mon Oct 13 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.7-1
 - New upstream version
 - Much better log viewer functionality
