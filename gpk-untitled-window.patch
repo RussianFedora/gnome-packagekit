@@ -1,0 +1,54 @@
+commit 95e5c1d6c104ea395c3dde9da4a6c327c05ec378
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Wed Oct 22 14:17:48 2008 +0100
+
+    bugfix: don't show 'untitled window' when we review updates and then update them
+
+diff --git a/src/gpk-client.c b/src/gpk-client.c
+index 60fb6e6..8ad9fe0 100644
+--- a/src/gpk-client.c
++++ b/src/gpk-client.c
+@@ -2754,6 +2754,11 @@ gpk_client_update_packages (GpkClient *gclient, gchar **package_ids, GError **er
+ 		goto out;
+ 	}
+ 
++	/* set title */
++	gpk_client_dialog_set_title (gclient->priv->dialog, _("Update packages"));
++	gpk_client_dialog_set_message (gclient->priv->dialog, "");
++	gpk_client_dialog_set_help_id (gclient->priv->dialog, "dialog-update-packages");
++
+ 	/* wrap update, but handle all the GPG and EULA stuff */
+ 	ret = pk_client_update_packages (gclient->priv->client_action, package_ids, &error_local);
+ 	if (!ret) {
+@@ -3172,6 +3177,13 @@ gboolean
+ gpk_client_set_parent (GpkClient *gclient, GtkWindow *window)
+ {
+ 	g_return_val_if_fail (GPK_IS_CLIENT (gclient), FALSE);
++
++	/* unparent */
++	if (window == NULL) {
++		gpk_client_dialog_set_parent (gclient->priv->dialog, NULL);
++		return TRUE;
++	}
++
+ 	gclient->priv->parent_window = GTK_WIDGET (window)->window;
+ 	egg_debug ("parent_window=%p", gclient->priv->parent_window);
+ 	gpk_client_dialog_set_parent (gclient->priv->dialog, gclient->priv->parent_window);
+diff --git a/src/gpk-update-viewer.c b/src/gpk-update-viewer.c
+index 2dac749..6c7cfc8 100644
+--- a/src/gpk-update-viewer.c
++++ b/src/gpk-update-viewer.c
+@@ -133,9 +133,13 @@ gpk_update_viewer_set_page (PkPageEnum page)
+ 	widget = glade_xml_get_widget (glade_xml, "window_updates");
+ 	if (page == PAGE_LAST) {
+ 		gtk_widget_hide (widget);
++		gpk_client_set_parent (gclient, NULL);
+ 		return;
+ 	}
+ 
++	/* restore modalness */
++	gpk_client_set_parent (gclient, GTK_WINDOW (widget));
++
+ 	/* some pages are resizeable */
+ 	if (page == PAGE_DETAILS)
+ 		gtk_window_set_resizable (GTK_WINDOW (widget), TRUE);
