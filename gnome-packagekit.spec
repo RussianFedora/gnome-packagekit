@@ -3,8 +3,8 @@
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.8
-Release:   2%{?dist}
+Version:   0.3.9
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -15,10 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 
 # Upstream: cc6ecacb62f66bbe4ce71f14583e108d6026b20f
-Patch1:    gpk~fix-resize-small-form-factor.patch
-
-# Upstream: 95e5c1d6c104ea395c3dde9da4a6c327c05ec378
-Patch2:    gpk-untitled-window.patch
+#Patch1:    gpk~fix-resize-small-form-factor.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -168,6 +165,11 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-*.desktop
 
 %changelog
+* Mon Oct 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-1
+- New upstream version
+- Many new and updated translations.
+- Lots of bugfixes (#467746, #467582)
+
 * Fri Oct 24 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.8-2
 - Fix the untitled window in gpk-update-viewer. Fixes #468200
 - Fix the resize problem on small form factor devices. Fixes #467987
