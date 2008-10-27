@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.9
-Release:   3%{?dist}
+Release:   4%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -73,7 +73,7 @@ viewer and a service pack creator.
 %prep
 %setup -q
 %patch0 -p1
-#%patch1 -p1
+%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -207,6 +207,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Oct 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-4
+- Barr. Actually apply the patch. Sleep time.
+
 * Mon Oct 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-3
 - Fix the size request of gpk-application to fix rh#467987
 
