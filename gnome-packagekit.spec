@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.9
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,8 +14,8 @@ Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
 
-# Upstream: cc6ecacb62f66bbe4ce71f14583e108d6026b20f
-#Patch1:    gpk~fix-resize-small-form-factor.patch
+# Upstream: 35209ff843ce0e90c886bdcdb16a7475ec300b06
+Patch1:    gpk-size-request.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -207,6 +207,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Oct 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-3
+- Fix the size request of gpk-application to fix rh#467987
+
 * Mon Oct 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-2
 - Split out the service pack creator and the backend status programs
   into a gnome-packagekit-extra package as it's not suitable for the
