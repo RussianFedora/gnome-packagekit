@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.9
-Release:   4%{?dist}
+Release:   5%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -31,8 +31,8 @@ Requires(pre):    GConf2
 Requires(post):   GConf2
 Requires(preun):  GConf2
 Requires(postun): scrollkeeper
-Obsoletes: pirut < 1.3.30-3
-Provides:  pirut = 1.3.30-3
+Obsoletes: pirut < 1.3.31-2
+Provides:  pirut = 1.3.31-2
 
 BuildRequires: libgnomeui-devel
 BuildRequires: libglade2-devel
@@ -207,6 +207,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Sat Nov 01 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-5
+- Fix up the pirut obsoletes to fix upgrades from F8. Fixes #469481
+
 * Mon Oct 27 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-4
 - Barr. Actually apply the patch. Sleep time.
 
