@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.9
-Release:   5%{?dist}
+Release:   6%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -207,6 +207,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Wed Nov 05 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-6
+- Fix up the fedora system-install-packages compatibility script.
+- Fixes #468568
+
 * Sat Nov 01 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-5
 - Fix up the pirut obsoletes to fix upgrades from F8. Fixes #469481
 
