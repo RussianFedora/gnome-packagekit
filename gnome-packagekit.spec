@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.9
-Release:   6%{?dist}
+Release:   7%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -16,6 +16,7 @@ Patch0:    gnome-packagekit-enable-kde.patch
 
 # Upstream: 35209ff843ce0e90c886bdcdb16a7475ec300b06
 Patch1:    gpk-size-request.patch
+Patch2:    gnome-packagekit-0.3.9-not-local-just-exit.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -74,6 +75,7 @@ viewer and a service pack creator.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -207,6 +209,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Fri Nov 07 2008 Warren Togami <wtogami@redhat.com> - 0.3.9-7
+- Bug #470617 Just exit instead of complaining about a non-local session
+
 * Wed Nov 05 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-6
 - Fix up the fedora system-install-packages compatibility script.
 - Fixes #468568
