@@ -4,7 +4,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.9
-Release:   7%{?dist}
+Release:   8%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -209,6 +209,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Nov 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-8
+- Rewrite the patch by Warren to only silently exit for the update icon.
+
 * Fri Nov 07 2008 Warren Togami <wtogami@redhat.com> - 0.3.9-7
 - Bug #470617 Just exit instead of complaining about a non-local session
 

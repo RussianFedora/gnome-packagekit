@@ -1,20 +1,177 @@
-diff -urN gnome-packagekit-0.3.9.orig/src/gpk-common.c gnome-packagekit-0.3.9/src/gpk-common.c
---- gnome-packagekit-0.3.9.orig/src/gpk-common.c	2008-10-24 05:16:45.000000000 -0400
-+++ gnome-packagekit-0.3.9/src/gpk-common.c	2008-11-07 19:16:32.000000000 -0500
-@@ -195,16 +195,6 @@
+commit 3ed600bd4119ae2ca48afc6e42c44dcc686ac4c1
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Sat Nov 8 16:38:21 2008 +0000
+
+    bugfix: don't show the non-local warning for the update icon on a terminal client, just for other applications
+
+diff --git a/src/gpk-application-main.c b/src/gpk-application-main.c
+index f8e7370..48bdc80 100644
+--- a/src/gpk-application-main.c
++++ b/src/gpk-application-main.c
+@@ -106,7 +106,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Package installer"));
++	ret = gpk_check_privileged_user (_("Package installer"), TRUE);
+ 	if (!ret) {
+ 		return 1;
+ 	}
+diff --git a/src/gpk-common.c b/src/gpk-common.c
+index f6693ec..d91bb49 100644
+--- a/src/gpk-common.c
++++ b/src/gpk-common.c
+@@ -165,7 +165,7 @@ gpk_package_get_name (const gchar *package_id)
+  * gpk_check_privileged_user
+  **/
+ gboolean
+-gpk_check_privileged_user (const gchar *application_name)
++gpk_check_privileged_user (const gchar *application_name, gboolean show_ui)
+ {
+ 	EggConsoleKit *ck = NULL;
+ 	guint uid;
+@@ -175,6 +175,8 @@ gpk_check_privileged_user (const gchar *application_name)
+ 
+ 	uid = getuid ();
+ 	if (uid == 0) {
++		if (!show_ui)
++			goto out;
+ 		if (application_name == NULL)
+ 			title = g_strdup (_("This application is running as a privileged user"));
+ 		else
+@@ -195,6 +197,8 @@ gpk_check_privileged_user (const gchar *application_name)
  	/* we are not local */
  	ret = egg_console_kit_is_local (ck);
  	if (!ret) {
--		if (application_name == NULL)
--			title = g_strdup (_("This application is running when the session is not local"));
--		else
--			title = g_strdup_printf (_("%s is running when the session is not local"), application_name);
--		message = g_strjoin ("\n",
--				     _("These applications should be run only when on local console."),
--				     _("This normally indicates a bug with ConsoleKit or with the way your session has started."), NULL);
--		gpk_error_dialog (title, message, "");
--		g_free (title);
--		g_free (message);
- 		egg_warning ("not LOCAL so closing");
- 		goto out;
++		if (!show_ui)
++			goto out;
+ 		if (application_name == NULL)
+ 			title = g_strdup (_("This application is running when the session is not local"));
+ 		else
+@@ -212,6 +216,8 @@ gpk_check_privileged_user (const gchar *application_name)
+ 	/* we are not active */
+ 	ret = egg_console_kit_is_active (ck);
+ 	if (!ret) {
++		if (!show_ui)
++			goto out;
+ 		if (application_name == NULL)
+ 			title = g_strdup (_("This application is running when the session is not active"));
+ 		else
+diff --git a/src/gpk-common.h b/src/gpk-common.h
+index dec6706..77968bf 100644
+--- a/src/gpk-common.h
++++ b/src/gpk-common.h
+@@ -85,7 +85,8 @@ gchar		*gpk_package_id_format_oneline		(const PkPackageId *id,
+ gchar		*gpk_package_id_name_version		(const PkPackageId *id);
+ 
+ gchar		*gpk_time_to_localised_string		(guint		 time_secs);
+-gboolean	 gpk_check_privileged_user		(const gchar	*application_name);
++gboolean	 gpk_check_privileged_user		(const gchar	*application_name,
++							 gboolean	 show_ui);
+ gboolean	 gpk_check_icon_valid			(const gchar	*icon);
+ gboolean	 gpk_set_animated_icon_from_status	(GpkAnimatedIcon *icon,
+ 							 PkStatusEnum	 status,
+diff --git a/src/gpk-install-catalog.c b/src/gpk-install-catalog.c
+index 28b8d3a..774ae0c 100644
+--- a/src/gpk-install-catalog.c
++++ b/src/gpk-install-catalog.c
+@@ -74,7 +74,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Catalog installer"));
++	ret = gpk_check_privileged_user (_("Catalog installer"), TRUE);
+ 	if (!ret)
+ 		return 1;
+ 
+diff --git a/src/gpk-install-local-file.c b/src/gpk-install-local-file.c
+index 6e679f7..2861fdb 100644
+--- a/src/gpk-install-local-file.c
++++ b/src/gpk-install-local-file.c
+@@ -74,7 +74,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Local file installer"));
++	ret = gpk_check_privileged_user (_("Local file installer"), TRUE);
+ 	if (!ret)
+ 		return 1;
+ 
+diff --git a/src/gpk-install-mime-type.c b/src/gpk-install-mime-type.c
+index d966e4e..9e39081 100644
+--- a/src/gpk-install-mime-type.c
++++ b/src/gpk-install-mime-type.c
+@@ -71,7 +71,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Mime type installer"));
++	ret = gpk_check_privileged_user (_("Mime type installer"), TRUE);
+ 	if (!ret)
+ 		return 1;
+ 
+diff --git a/src/gpk-install-package-name.c b/src/gpk-install-package-name.c
+index d0b26f5..a46b5f2 100644
+--- a/src/gpk-install-package-name.c
++++ b/src/gpk-install-package-name.c
+@@ -74,7 +74,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Package name installer"));
++	ret = gpk_check_privileged_user (_("Package Name Installer"), TRUE);
+ 	if (!ret)
+ 		return 1;
+ 
+diff --git a/src/gpk-install-provide-file.c b/src/gpk-install-provide-file.c
+index d1b9778..aec751e 100644
+--- a/src/gpk-install-provide-file.c
++++ b/src/gpk-install-provide-file.c
+@@ -71,7 +71,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Provide file installer"));
++	ret = gpk_check_privileged_user (_("Provide File Installer"), TRUE);
+ 	if (!ret)
+ 		return 1;
+ 
+diff --git a/src/gpk-log.c b/src/gpk-log.c
+index 315f557..b667ed3 100644
+--- a/src/gpk-log.c
++++ b/src/gpk-log.c
+@@ -596,7 +596,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Log viewer"));
++	ret = gpk_check_privileged_user (_("Log viewer"), TRUE);
+ 	if (!ret)
+ 		return 1;
+ 
+diff --git a/src/gpk-repo.c b/src/gpk-repo.c
+index e7f840c..3f2a7a6 100644
+--- a/src/gpk-repo.c
++++ b/src/gpk-repo.c
+@@ -357,7 +357,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Software source viewer"));
++	ret = gpk_check_privileged_user (_("Software source viewer"), TRUE);
+ 	if (!ret) {
+ 		return 1;
  	}
+diff --git a/src/gpk-update-icon.c b/src/gpk-update-icon.c
+index 5acc008..dfad589 100644
+--- a/src/gpk-update-icon.c
++++ b/src/gpk-update-icon.c
+@@ -161,7 +161,7 @@ main (int argc, char *argv[])
+ 	gtk_init (&argc, &argv);
+ 
+ 	/* are we running privileged */
+-	ret = gpk_check_privileged_user (_("Update applet"));
++	ret = gpk_check_privileged_user (_("Update applet"), FALSE);
+ 	if (!ret)
+ 		return 1;
+ 
