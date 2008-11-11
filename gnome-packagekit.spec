@@ -1,10 +1,12 @@
 %define dbus_version            0.61
-%define packagekit_version      0.2.3
+%define packagekit_version      0.3.8
+
+%{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.2.5
-Release:   3%{?dist}
+Version:   0.3.10
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -13,7 +15,6 @@ Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
-Patch1:    gnome-packagekit-fix-gtype.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -52,16 +53,25 @@ BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
 BuildRequires: unique-devel
 BuildRequires: intltool
+BuildRequires: xorg-x11-proto-devel
 
 %description
-packagekit-gnome provides session applications for the PackageKit API.
+gnome-packagekit provides session applications for the PackageKit API.
 There are several utilities designed for installing, updating and
 removing packages on your system.
+
+%package extra
+Summary: GNOME PackageKit Client (extra bits)
+Group: Applications/System
+Requires: %{name} = %{version}-%{release}
+
+%description extra
+Extra GNOME applications for using PackageKit, for instance an advanced update
+viewer and a service pack creator.
 
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -95,10 +105,10 @@ rm -rf $RPM_BUILD_ROOT
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 gconftool-2 --makefile-install-rule \
         %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas >/dev/null || :
-scrollkeeper-update -q
+scrollkeeper-update -q &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
-    gtk-update-icon-cache -q %{_datadir}/icons/hicolor
+    gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
 fi
 update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
@@ -107,21 +117,21 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 if [ "$1" -gt 1 ]; then
     export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
     gconftool-2 --makefile-uninstall-rule \
-      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas > /dev/null || :
+      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas &> /dev/null || :
 fi
 
 %preun
 if [ "$1" -eq 0 ]; then
     export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
     gconftool-2 --makefile-uninstall-rule \
-      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas > /dev/null || :
+      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas &> /dev/null || :
 fi
 
 %postun
-scrollkeeper-update -q
+scrollkeeper-update -q &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
-    gtk-update-icon-cache -q %{_datadir}/icons/hicolor
+    gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
 fi
 update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
@@ -129,22 +139,59 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-%{_bindir}/gpk-*
+%{_bindir}/gpk-application
+%{_bindir}/gpk-install-*
+%{_bindir}/gpk-log
+%{_bindir}/gpk-prefs
+%{_bindir}/gpk-repo
+%{_bindir}/gpk-update-icon
+%{_bindir}/gpk-update-viewer
 %{_bindir}/system-install-packages
-%{_datadir}/gnome-packagekit
-%{_datadir}/icons/hicolor/16x16/status/*.png
-%{_datadir}/icons/hicolor/22x22/status/*.png
-%{_datadir}/icons/hicolor/24x24/status/*.png
-%{_datadir}/icons/hicolor/48x48/status/*.png
-%{_datadir}/icons/hicolor/scalable/status/*.svg
+%dir %{_datadir}/gnome-packagekit
+%{_datadir}/gnome-packagekit/gpk-application.glade
+%{_datadir}/gnome-packagekit/gpk-client.glade
+%{_datadir}/gnome-packagekit/gpk-eula.glade
+%{_datadir}/gnome-packagekit/gpk-prefs.glade
+%{_datadir}/gnome-packagekit/gpk-update-viewer.glade
+%{_datadir}/gnome-packagekit/gpk-error.glade
+%{_datadir}/gnome-packagekit/gpk-log.glade
+%{_datadir}/gnome-packagekit/gpk-repo.glade
+%{_datadir}/gnome-packagekit/gpk-signature.glade
+%dir %{_datadir}/gnome-packagekit/icons
+%dir %{_datadir}/gnome-packagekit/icons/hicolor
+%dir %{_datadir}/gnome-packagekit/icons/hicolor/*
+%dir %{_datadir}/gnome-packagekit/icons/hicolor/*/*
+%{_datadir}/gnome-packagekit/icons/hicolor/*/*/*.png
+%{_datadir}/gnome-packagekit/icons/hicolor/scalable/*/*.svg*
+%{_datadir}/icons/hicolor/*/*/*.png
+%{_datadir}/icons/hicolor/scalable/*/*.svg*
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
+%{python_sitelib}/packagekit/*py*
 %{_datadir}/omf/gnome-packagekit
 %{_sysconfdir}/xdg/autostart/gpk-update-icon.desktop
-%{_datadir}/applications/gpk-*.desktop
+%{_datadir}/applications/gpk-application.desktop
+%{_datadir}/applications/gpk-install-file.desktop
+%{_datadir}/applications/gpk-prefs.desktop
+%{_datadir}/applications/gpk-install-catalog.desktop
+%{_datadir}/applications/gpk-log.desktop
+%{_datadir}/applications/gpk-repo.desktop
+%{_datadir}/applications/gpk-update-viewer.desktop
+
+%files extra
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%{_bindir}/gpk-backend-status
+%{_bindir}/gpk-service-pack
+%{_datadir}/gnome-packagekit/gpk-service-pack.glade
+%{_datadir}/gnome-packagekit/gpk-backend-status.glade
+%{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Nov 11 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.10-1
+- Backport new upstream version from F10.
+
 * Sat Nov 01 2008 Richard Hughes  <rhughes@redhat.com> - 0.2.5-3
 - Fix up the pirut obsoletes to fix upgrades from F8. Fixes #469481
 
