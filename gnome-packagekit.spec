@@ -1,10 +1,12 @@
 %define dbus_version            0.61
 %define packagekit_version      0.3.8
 
+%{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.9
-Release:   8%{?dist}
+Version:   0.3.10
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -13,10 +15,6 @@ Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
-
-# Upstream: 35209ff843ce0e90c886bdcdb16a7475ec300b06
-Patch1:    gpk-size-request.patch
-Patch2:    gnome-packagekit-0.3.9-not-local-just-exit.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -74,8 +72,6 @@ viewer and a service pack creator.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -189,6 +185,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
+%{python_sitelib}/packagekit/*py*
 %{_datadir}/omf/gnome-packagekit
 %{_sysconfdir}/xdg/autostart/gpk-update-icon.desktop
 %{_datadir}/applications/gpk-application.desktop
@@ -209,6 +206,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Nov 11 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.10-1
+- New upstream version
+- Drop all upstreamed patches
+
 * Mon Nov 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.9-8
 - Rewrite the patch by Warren to only silently exit for the update icon.
 
