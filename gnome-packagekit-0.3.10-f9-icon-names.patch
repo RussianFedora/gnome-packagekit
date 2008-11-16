@@ -1,0 +1,52 @@
+diff --git a/data/gpk-application.desktop.in b/data/gpk-application.desktop.in
+index 0d3497f..94c77b6 100644
+--- a/data/gpk-application.desktop.in
++++ b/data/gpk-application.desktop.in
+@@ -3,7 +3,7 @@ Encoding=UTF-8
+ _Name=Add/Remove Software
+ _GenericName=Add/Remove Software
+ _Comment=Add or remove software installed on the system
+-Icon=system-software-install
++Icon=system-software-installer
+ Exec=gpk-application
+ Terminal=false
+ Type=Application
+diff --git a/data/gpk-install-catalog.desktop.in b/data/gpk-install-catalog.desktop.in
+index 60d0256..1049115 100644
+--- a/data/gpk-install-catalog.desktop.in
++++ b/data/gpk-install-catalog.desktop.in
+@@ -7,7 +7,7 @@ Categories=System;X-Red-Hat-Base;X-Fedora;
+ Exec=/usr/bin/gpk-install-catalog %F
+ Terminal=false
+ Type=Application
+-Icon=system-software-install
++Icon=system-software-installer
+ StartupNotify=true
+ NoDisplay=true
+ MimeType=application/x-catalog
+diff --git a/data/gpk-install-file.desktop.in b/data/gpk-install-file.desktop.in
+index b6b421a..e978a6b 100644
+--- a/data/gpk-install-file.desktop.in
++++ b/data/gpk-install-file.desktop.in
+@@ -7,7 +7,7 @@ Categories=System;X-Red-Hat-Base;X-Fedora;
+ Exec=/usr/bin/gpk-install-local-file %F
+ Terminal=false
+ Type=Application
+-Icon=system-software-install
++Icon=system-software-installer
+ StartupNotify=true
+ NoDisplay=true
+ MimeType=application/x-rpm;application/x-redhat-package-manager;application/x-servicepack;
+diff --git a/src/gpk-common.h b/src/gpk-common.h
+index 8c41474..b27e5c6 100644
+--- a/src/gpk-common.h
++++ b/src/gpk-common.h
+@@ -70,7 +70,7 @@ G_BEGIN_DECLS
+ 
+ #define GPK_ICON_SOFTWARE_UPDATE		"system-software-update"
+ #define GPK_ICON_SOFTWARE_SOURCES		"gpk-repo"
+-#define GPK_ICON_SOFTWARE_INSTALLER		"system-software-install"
++#define GPK_ICON_SOFTWARE_INSTALLER		"system-software-installer"
+ #define GPK_ICON_SOFTWARE_LOG			"gpk-log"
+ #define GPK_ICON_SOFTWARE_UPDATE_PREFS		"gpk-prefs"
+ #define GPK_ICON_SOFTWARE_UPDATE_AVAILABLE	"software-update-available"
