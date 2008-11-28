@@ -6,7 +6,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.11
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -206,6 +206,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Fri Nov 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.11-2
+- Rebuild because Bodhi hates me.
+
 * Wed Nov 26 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.11-1
 - New upstream version
 
