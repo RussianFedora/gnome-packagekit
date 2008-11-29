@@ -6,7 +6,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   0.3.11
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -206,6 +206,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.3.11-2
+- Rebuild for Python 2.6
+
 * Mon Nov 24 2008 Richard Hughes <rhughes@redhat.com> - 0.3.11-1
 - New upstream version
 
