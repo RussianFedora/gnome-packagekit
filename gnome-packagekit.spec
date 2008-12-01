@@ -6,7 +6,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.11
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,7 +14,18 @@ Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# Fedora specific, not to go upstream
 Patch0:    gnome-packagekit-enable-kde.patch
+
+# from git, bd21710fe4b3fb4800d8fabcc3a2b1aff85e9361
+Patch1:    gnome-packagekit-0.3.11-fix-desktop-linguas.patch
+
+# from git, 86f2618a71b4e2c4528448ce06179e0923460fb9
+Patch2:    gnome-packagekit-0.3.11-fix-small-form-factor-mode.patch
+
+# from git, 75bd966787688b0cdf5b10b2d0e0b89e4b834e4c
+Patch3:    gnome-packagekit-0.3.11-show-force-install.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -72,6 +83,9 @@ viewer and a service pack creator.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -206,6 +220,11 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Dec 01 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.11-3
+- Enable translations for PkDesktop as it mas missed from LINGUAS
+- Don't crash gpk-application on small form factor devices
+- Use the correct widget name when enabling the "force install" button
+
 * Fri Nov 28 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.11-2
 - Rebuild because Bodhi hates me.
 

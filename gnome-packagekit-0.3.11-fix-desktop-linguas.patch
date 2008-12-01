@@ -1,0 +1,17 @@
+commit bd21710fe4b3fb4800d8fabcc3a2b1aff85e9361
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Fri Nov 28 18:02:36 2008 +0000
+
+    trivial: add gpk-desktop to the list of translated files to fix make check
+
+diff --git a/po/POTFILES.in b/po/POTFILES.in
+index 849656a..099a6b2 100644
+--- a/po/POTFILES.in
++++ b/po/POTFILES.in
+@@ -54,5 +54,6 @@ src/gpk-smart-icon.c
+ src/gpk-update-icon.c
+ src/gpk-update-viewer.c
+ src/gpk-watch.c
++src/gpk-desktop.c
+ python/packagekit/gtkwidgets.py
+ 
