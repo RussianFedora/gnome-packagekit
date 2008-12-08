@@ -1,12 +1,12 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.8
+%define packagekit_version      0.3.11
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.10
-Release:   2%{?dist}
+Version:   0.3.12
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -191,6 +191,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Dec 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.12-1
+- Backport new upstream version from F10.
+
 * Sun Nov 16 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.10-2
 - Apply a F9 specific patch to fix the Add/Remove Software icon.
 
