@@ -1,12 +1,12 @@
 %define dbus_version            0.61
-%define packagekit_version      0.3.11
+%define packagekit_version      0.4.0
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   0.3.11
-Release:   3%{?dist}
+Version:   0.4.0
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,7 +14,6 @@ Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Patch0:    gnome-packagekit-enable-kde.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -25,6 +24,7 @@ Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
 Requires:  PackageKit-libs >= %{packagekit_version}
 Requires:  shared-mime-info
+Requires:  iso-codes
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
 Requires(post):   GConf2
@@ -48,12 +48,14 @@ BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: gnome-doc-utils
+BuildRequires: gnome-menus-devel
 BuildRequires: libsexy-devel
 BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
 BuildRequires: unique-devel
 BuildRequires: intltool
 BuildRequires: xorg-x11-proto-devel
+BuildRequires: fontconfig-devel
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -71,7 +73,6 @@ viewer and a service pack creator.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -206,6 +207,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Dec 09 2008 Richard Hughes  <rhughes@redhat.com> - 0.4.0-1
+- New upstream version
+
 * Thu Dec  4 2008 Matthias Clasen <mclasen@redhat.com> 0.3.11-3
 - Rebuild for Python 2.6
 
