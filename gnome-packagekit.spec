@@ -6,7 +6,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.12
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -19,7 +19,7 @@ Patch0:    gnome-packagekit-enable-kde.patch
 # not upstream, F9 specific
 Patch1:    gnome-packagekit-0.3.10-f9-icon-names.patch
 
-# upstream, 95366b92832f983268eadc918bcbd36f7ed26fd9
+# upstream, 53e36a72b0d541889e18b48c784f1e15726a17fe
 Patch2:    gnome-packagekit-0.3.12-fix-gtk-compile.patch
 
 Requires:  gtk2 >= 2.12.0
@@ -198,6 +198,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Wed Dec 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.12-3
+- Fix the last patch to fix compile on F9 as gio is linked in explicitly.
+
 * Wed Dec 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.12-2
 - Fix compile with gtk < 2.14.
 

@@ -1,4 +1,4 @@
-commit 95373efcae4776a695aff7938abaaa7a3a26057a
+commit 53e36a72b0d541889e18b48c784f1e15726a17fe
 Author: Richard Hughes <richard@hughsie.com>
 Date:   Wed Dec 10 08:24:03 2008 +0000
 
@@ -46,6 +46,26 @@ index ad157ef..6c74e30 100644
  AC_PATH_PROG(GCONFTOOL, gconftool-2)
  AM_GCONF_SOURCE_2
  
+diff --git a/src/Makefile.am b/src/Makefile.am
+index b50bff2..1b48268 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -5,6 +5,7 @@ NULL =
+ 
+ INCLUDES =						\
+ 	$(GLIB_CFLAGS)					\
++	$(GIO_CFLAGS)					\
+ 	$(DBUS_CFLAGS)					\
+ 	$(GCONF_CFLAGS)					\
+ 	$(LIBGLADE_CFLAGS)				\
+@@ -99,6 +100,7 @@ shared_SOURCES =					\
+ 
+ shared_LIBS =						\
+ 	$(GLIB_LIBS)					\
++	$(GIO_LIBS)					\
+ 	$(DBUS_LIBS)					\
+ 	$(GCONF_LIBS)					\
+ 	$(LIBGLADE_LIBS)				\
 diff --git a/src/gpk-client-untrusted.c b/src/gpk-client-untrusted.c
 index f18ea6c..8c63ed8 100644
 --- a/src/gpk-client-untrusted.c
