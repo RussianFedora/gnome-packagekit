@@ -6,7 +6,7 @@
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
 Version:   0.3.12
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -15,7 +15,12 @@ Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0:    gnome-packagekit-enable-kde.patch
+
+# not upstream, F9 specific
 Patch1:    gnome-packagekit-0.3.10-f9-icon-names.patch
+
+# upstream, 95366b92832f983268eadc918bcbd36f7ed26fd9
+Patch2:    gnome-packagekit-0.3.12-fix-gtk-compile.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -74,8 +79,10 @@ viewer and a service pack creator.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
+autoconf
 %configure --disable-scrollkeeper --disable-schemas-install
 make %{?_smp_mflags}
 
@@ -191,6 +198,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Wed Dec 10 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.12-2
+- Fix compile with gtk < 2.14.
+
 * Mon Dec 08 2008 Richard Hughes  <rhughes@redhat.com> - 0.3.12-1
 - Backport new upstream version from F10.
 

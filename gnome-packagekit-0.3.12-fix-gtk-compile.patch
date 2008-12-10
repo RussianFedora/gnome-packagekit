@@ -1,0 +1,64 @@
+commit 95373efcae4776a695aff7938abaaa7a3a26057a
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Wed Dec 10 08:24:03 2008 +0000
+
+    bugfix: don't use gtk_dialog_get_action_area on gtk < 2.14
+
+diff --git a/configure.ac b/configure.ac
+index ad157ef..6c74e30 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -97,12 +97,6 @@ PKG_CHECK_MODULES(GIO, gio-2.0)
+ AC_SUBST(GIO_CFLAGS)
+ AC_SUBST(GIO_LIBS)
+ 
+-OLDCPPFLAGS=$CPPFLAGS
+-CPPFLAGS=$GIO_CFLAGS
+-LIBS=$GIO_LIBS
+-AC_CHECK_FUNCS(g_file_make_directory_with_parents)
+-CPPFLAGS=$OLDCPPFLAGS
+-
+ PKG_CHECK_MODULES(DBUS, \
+  dbus-glib-1 >= $DBUS_GLIB_REQUIRED \
+  dbus-1 >= $DBUS_REQUIRED \
+@@ -135,6 +129,24 @@ PKG_CHECK_MODULES(LIBNOTIFY, \
+ AC_SUBST(LIBNOTIFY_CFLAGS)
+ AC_SUBST(LIBNOTIFY_LIBS)
+ 
++dnl ---------------------------------------------------------------------------
++dnl - Check for g_file_make_directory_with_parents
++dnl ---------------------------------------------------------------------------
++OLDCPPFLAGS=$CPPFLAGS
++CPPFLAGS=$GIO_CFLAGS
++LIBS=$GIO_LIBS
++AC_CHECK_FUNCS(g_file_make_directory_with_parents)
++CPPFLAGS=$OLDCPPFLAGS
++
++dnl ---------------------------------------------------------------------------
++dnl - Check for gtk_dialog_get_action_area
++dnl ---------------------------------------------------------------------------
++OLDCPPFLAGS=$CPPFLAGS
++CPPFLAGS=$GTK_CFLAGS
++LIBS=$GTK_LIBS
++AC_CHECK_FUNCS(gtk_dialog_get_action_area)
++CPPFLAGS=$OLDCPPFLAGS
++
+ AC_PATH_PROG(GCONFTOOL, gconftool-2)
+ AM_GCONF_SOURCE_2
+ 
+diff --git a/src/gpk-client-untrusted.c b/src/gpk-client-untrusted.c
+index f18ea6c..8c63ed8 100644
+--- a/src/gpk-client-untrusted.c
++++ b/src/gpk-client-untrusted.c
+@@ -123,7 +123,11 @@ gpk_client_untrusted_show (PkErrorCodeEnum code)
+ 
+ 	/* add to box */
+ 	widget = glade_xml_get_widget (glade_xml, "dialog_error");
++#ifdef HAVE_GTK_DIALOG_GET_ACTION_AREA
+ 	widget = gtk_dialog_get_action_area (GTK_DIALOG(widget));
++#else
++	widget = GTK_DIALOG(widget)->action_area;
++#endif
+ 	gtk_box_pack_start (GTK_BOX (widget), button, FALSE, FALSE, 0);
+ 
+ 	/* show window */
