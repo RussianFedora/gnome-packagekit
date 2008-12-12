@@ -6,7 +6,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   0.4.0
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -14,6 +14,9 @@ Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# Fedora-specific -- requires behdad's new fontconfig before it's useful
+Patch0:    gnome-packagekit-0.4.0-set-gtk-module-false.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -23,6 +26,7 @@ Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
 Requires:  PackageKit-libs >= %{packagekit_version}
+Requires:  PackageKit-gtk-module >= %{packagekit_version}
 Requires:  shared-mime-info
 Requires:  iso-codes
 Requires(post):   scrollkeeper
@@ -73,6 +77,7 @@ viewer and a service pack creator.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -207,6 +212,13 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Fri Dec 12 2008 Richard Hughes  <rhughes@redhat.com> - 0.4.0-2
+- Depend on PackageKit-gtk-module so the auto-font installation can be
+  turned on in F11.
+- Turn off the loading of libpk-gtk-module.so until we have a new
+  fontconfig using a spec file patch that we can nuke soon.
+- Fixes rh#476066
+
 * Tue Dec 09 2008 Richard Hughes  <rhughes@redhat.com> - 0.4.0-1
 - New upstream version
 
