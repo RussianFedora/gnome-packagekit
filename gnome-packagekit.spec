@@ -5,8 +5,8 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   0.4.0
-Release:   2%{?dist}
+Version:   0.4.2
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -212,6 +212,22 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Jan 19 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.2-1
+- New upstream version
+- Lots of bug fixes
+
+* Thu Jan 08 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.1-1
+- New upstream version
+- Add an option to the prefs dialog to prevent checking for updates when
+  using mobile broadband connections
+- Allow the admin to restrict getting updates when on WiFi connections
+- Set the default search mode to details (not name) and preserve the search
+  type in GConf if changed in the UI
+- Add a simple markdown parser and use it in all applications.
+- Send different errors when we fail a method on the session DBus interface
+- Support setting timeouts via the interaction mode from the DBus interface
+- Lots of bugfixes
+
 * Fri Dec 12 2008 Richard Hughes  <rhughes@redhat.com> - 0.4.0-2
 - Depend on PackageKit-gtk-module so the auto-font installation can be
   turned on in F11.
