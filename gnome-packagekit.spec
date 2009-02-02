@@ -5,7 +5,7 @@
 
 Summary:   GNOME PackageKit Client
 Name:      gnome-packagekit
-Version:   0.3.13
+Version:   0.3.14
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -208,6 +208,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Feb 02 2009 Richard Hughes  <rhughes@redhat.com> - 0.3.14-1
+- New upstream version
+
 * Thu Jan 08 2009 Richard Hughes  <rhughes@redhat.com> - 0.3.13-1
 - New upstream version
 
