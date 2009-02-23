@@ -5,7 +5,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   0.4.3
+Version:   0.4.4
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -212,6 +212,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Feb 23 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.4-1
+- New upstream version
+- Lots of bug fixes
+
 * Mon Jan 19 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.2-1
 - New upstream version
 - Lots of bug fixes
