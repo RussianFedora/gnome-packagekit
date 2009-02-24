@@ -6,7 +6,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   0.4.4
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -212,6 +212,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Mon Feb 23 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.4-2
 - Bump for rebuild.
 
