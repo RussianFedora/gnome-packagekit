@@ -1,0 +1,40 @@
+diff --git a/data/gpk-update-viewer.desktop.in b/data/gpk-update-viewer.desktop.in
+index bcde9af..cf5c67d 100644
+--- a/data/gpk-update-viewer.desktop.in
++++ b/data/gpk-update-viewer.desktop.in
+@@ -4,7 +4,7 @@ _Name=Update System
+ _GenericName=Software Update Viewer
+ _Comment=Update software installed on the system
+ Icon=system-software-update
+-Exec=gpk-update-viewer
++Exec=gpk-update-viewer2
+ Terminal=false
+ Type=Application
+ Categories=GNOME;GTK;Settings;System;PackageManager;
+diff --git a/src/gpk-check-update.c b/src/gpk-check-update.c
+index 2f2cd36..45ac91b 100644
+--- a/src/gpk-check-update.c
++++ b/src/gpk-check-update.c
+@@ -334,7 +334,7 @@ gpk_check_update_menuitem_update_system_cb (GtkMenuItem *item, gpointer data)
+ static void
+ gpk_check_update_menuitem_show_updates_cb (GtkMenuItem *item, gpointer data)
+ {
+-	const gchar *command = "gpk-update-viewer";
++	const gchar *command = "gpk-update-viewer2";
+ 	if (!g_spawn_command_line_async (command, NULL))
+ 		egg_warning ("Couldn't execute command: %s", command);
+ }
+diff --git a/src/gpk-log.c b/src/gpk-log.c
+index e3c711f..8414b5a 100644
+--- a/src/gpk-log.c
++++ b/src/gpk-log.c
+@@ -542,6 +542,9 @@ gpk_log_add_obj (const PkTransactionObj *obj)
+ 	else if (egg_strequal (obj->cmdline, "gpk-update-viewer"))
+ 		/* TRANSLATORS: short name for gpk-update-viewer */
+ 		tool = _("Update System");
++	else if (egg_strequal (obj->cmdline, "gpk-update-viewer2"))
++		/* TRANSLATORS: short name for gpk-update-viewer (new name) */
++		tool = _("Update System");
+ 	else if (egg_strequal (obj->cmdline, "gpk-update-icon"))
+ 		/* TRANSLATORS: short name for gpk-update-icon */
+ 		tool = _("Update Icon");

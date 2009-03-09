@@ -5,8 +5,8 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   0.4.4
-Release:   3%{?dist}
+Version:   0.4.5
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -16,7 +16,10 @@ Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Fedora-specific -- requires behdad's new fontconfig before it's useful
-Patch0:    gnome-packagekit-0.4.0-set-gtk-module-false.patch
+#Patch0:    gnome-packagekit-0.4.0-set-gtk-module-false.patch
+
+# Fedora specific, as we want bleeding edge
+Patch1:    gnome-packagekit-0.4.5-use-unfinished-update-viewer.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -53,7 +56,6 @@ BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: gnome-doc-utils
 BuildRequires: gnome-menus-devel
-BuildRequires: libsexy-devel
 BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
 BuildRequires: unique-devel
@@ -77,7 +79,8 @@ viewer and a service pack creator.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
+%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -207,11 +210,19 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/gpk-backend-status
 %{_bindir}/gpk-service-pack
+%{_bindir}/gpk-update-viewer2
 %{_datadir}/gnome-packagekit/gpk-service-pack.glade
 %{_datadir}/gnome-packagekit/gpk-backend-status.glade
+%{_datadir}/gnome-packagekit/gpk-update-viewer2.glade
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Mar 09 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.5-1
+- New upstream version
+- Merge in a new update viewer with a very different UI which I've patched
+  Fedora to use by default as requested by Matthias.
+- Lots of translation updates
+
 * Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
