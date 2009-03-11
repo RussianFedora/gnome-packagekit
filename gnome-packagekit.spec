@@ -6,7 +6,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   0.4.5
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -172,6 +172,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_bindir}/gpk-repo
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
+%{_bindir}/gpk-update-viewer2
 %{_bindir}/system-install-packages
 %dir %{_datadir}/gnome-packagekit
 %{_datadir}/gnome-packagekit/gpk-application.glade
@@ -183,6 +184,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/gnome-packagekit/gpk-log.glade
 %{_datadir}/gnome-packagekit/gpk-repo.glade
 %{_datadir}/gnome-packagekit/gpk-signature.glade
+%{_datadir}/gnome-packagekit/gpk-update-viewer2.glade
 %dir %{_datadir}/gnome-packagekit/icons
 %dir %{_datadir}/gnome-packagekit/icons/hicolor
 %dir %{_datadir}/gnome-packagekit/icons/hicolor/*
@@ -210,13 +212,15 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/gpk-backend-status
 %{_bindir}/gpk-service-pack
-%{_bindir}/gpk-update-viewer2
 %{_datadir}/gnome-packagekit/gpk-service-pack.glade
 %{_datadir}/gnome-packagekit/gpk-backend-status.glade
-%{_datadir}/gnome-packagekit/gpk-update-viewer2.glade
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Wed Mar 11 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.5-3
+- Put gpk-update-viewer2 into the main package, not extras
+- Fixes #489677
+
 * Mon Mar 09 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.5-2
 - Require PackageKit 0.4.5 otherwise the new update viewer breaks
 
