@@ -1,16 +1,17 @@
 %define dbus_version            0.61
 %define packagekit_version      0.4.5
+%define alphatag                20090317
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   0.4.5
-Release:   3%{?dist}
+Version:   0.4.6
+Release:   0.1.%{?alphatag}git%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
+Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
 Source1:   system-install-packages
 Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -78,7 +79,7 @@ Extra GNOME applications for using PackageKit, for instance an advanced update
 viewer and a service pack creator.
 
 %prep
-%setup -q
+%setup -q -n %{?name}-%{?version}-%{?alphatag}
 #%patch0 -p1
 %patch1 -p1
 
@@ -217,6 +218,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Mar 17 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.6-0.1013.20090316git
+- Update to a git snapshot so we can test the latest version of the
+  update viewer.
+
 * Wed Mar 11 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.5-3
 - Put gpk-update-viewer2 into the main package, not extras
 - Fixes #489677
