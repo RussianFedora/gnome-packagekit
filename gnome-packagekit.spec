@@ -1,6 +1,6 @@
 %define dbus_version            0.61
 %define packagekit_version      0.4.5
-%define alphatag                20090317
+%define alphatag                20090319
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
@@ -12,12 +12,9 @@ License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
-Source1:   system-install-packages
-Source2:   system-install-packages.1.gz
+#Source1:   system-install-packages
+#Source2:   system-install-packages.1.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-# Fedora-specific -- requires behdad's new fontconfig before it's useful
-#Patch0:    gnome-packagekit-0.4.0-set-gtk-module-false.patch
 
 # Fedora specific, as we want bleeding edge
 Patch1:    gnome-packagekit-0.4.5-use-unfinished-update-viewer.patch
@@ -93,8 +90,8 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
-install -m 0644 -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
+#install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
+#install -m 0644 -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -174,7 +171,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
 %{_bindir}/gpk-update-viewer2
-%{_bindir}/system-install-packages
+#%{_bindir}/system-install-packages
 %dir %{_datadir}/gnome-packagekit
 %{_datadir}/gnome-packagekit/gpk-application.glade
 %{_datadir}/gnome-packagekit/gpk-client.glade
@@ -218,7 +215,13 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
-* Tue Mar 17 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.6-0.1013.20090316git
+* Thu Mar 19 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.6-0.1.20090319git
+- Update to todays git snapshot so we can test the latest version of the
+  update viewer.
+- Remove the fedora system-install-packages compatibility script as we've had
+  it for over two releases.
+
+* Tue Mar 17 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.6-0.1.20090317git
 - Update to a git snapshot so we can test the latest version of the
   update viewer.
 
