@@ -1,13 +1,13 @@
 %define dbus_version            0.61
 %define packagekit_version      0.4.5
-%define alphatag                20090319
+%define alphatag                20090324
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   0.4.6
-Release:   0.2.%{?alphatag}git%{?dist}
+Version:   2.27.1
+Release:   0.1.%{?alphatag}git%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -215,6 +215,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Mar 24 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.1-0.1.20090324git
+- New snapshot fixing several bugs with the new update viewer.
+
 * Thu Mar 19 2009 Richard Hughes  <rhughes@redhat.com> - 0.4.6-0.2.20090319git
 - Don't break the package download size label.
 
