@@ -1,23 +1,23 @@
 %define dbus_version            0.61
 %define packagekit_version      0.4.5
-%define alphatag                20090324
+#%define alphatag                20090324
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.1
-Release:   0.1.%{?alphatag}git%{?dist}
+#Release:   0.1.%{?alphatag}git%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
-#Source1:   system-install-packages
-#Source2:   system-install-packages.1.gz
+#Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Fedora specific, as we want bleeding edge
-Patch1:    gnome-packagekit-0.4.5-use-unfinished-update-viewer.patch
+#Patch0:    gnome-packagekit-0.4.5-use-unfinished-update-viewer.patch
 
 Requires:  gtk2 >= 2.12.0
 Requires:  gnome-icon-theme
@@ -76,9 +76,9 @@ Extra GNOME applications for using PackageKit, for instance an advanced update
 viewer and a service pack creator.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
+#%setup -q -n %{?name}-%{?version}-%{?alphatag}
+%setup -q
 #%patch0 -p1
-%patch1 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -89,9 +89,6 @@ rm -rf $RPM_BUILD_ROOT
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
-
-#install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/system-install-packages
-#install -m 0644 -D %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/man/man1/system-install-packages.1.gz
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -171,7 +168,6 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
 %{_bindir}/gpk-update-viewer2
-#%{_bindir}/system-install-packages
 %dir %{_datadir}/gnome-packagekit
 %{_datadir}/gnome-packagekit/gpk-application.glade
 %{_datadir}/gnome-packagekit/gpk-client.glade
@@ -215,6 +211,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Mar 30 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.1-1
+- New upstream version
+
 * Tue Mar 24 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.1-0.1.20090324git
 - New snapshot fixing several bugs with the new update viewer.
 
