@@ -7,13 +7,13 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.2
-Release:   0.1.%{?alphatag}git%{?dist}
+Release:   0.2.%{?alphatag}git%{?dist}
 #Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
-Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
+Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+#Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  gtk2 >= 2.15.0
@@ -72,8 +72,8 @@ Extra GNOME applications for using PackageKit, for instance an advanced update
 viewer and a service pack creator.
 
 %prep
-#%setup -q -n %{?name}-%{?version}-%{?alphatag}
-%setup -q
+%setup -q -n %{?name}-%{?version}-%{?alphatag}
+#%setup -q
 #%patch0 -p1
 
 %build
@@ -205,6 +205,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Apr 14 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-0.2.20090414git
+- Reroll the tarball without the new PkMediaTypeEnum functionality which
+  is present in git master PackageKit.
+
 * Tue Apr 14 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-0.1.20090414git
 - New git snapshot fixing several bugs
 
