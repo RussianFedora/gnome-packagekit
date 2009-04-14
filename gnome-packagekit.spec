@@ -1,14 +1,14 @@
 %define dbus_version            0.61
 %define packagekit_version      0.4.5
-#%define alphatag                20090324
+%define alphatag                20090414
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.2
-#Release:   0.1.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   0.1.%{?alphatag}git%{?dist}
+#Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -205,8 +205,8 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
-* Tue Apr 14 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-1
-- New upstream version
+* Tue Apr 14 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-0.1.20090414git
+- New git snapshot fixing several bugs
 
 * Mon Mar 30 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.1-1
 - New upstream version
