@@ -6,7 +6,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.1
+Version:   2.27.2
 #Release:   0.1.%{?alphatag}git%{?dist}
 Release:   1%{?dist}
 License:   GPLv2+
@@ -16,13 +16,10 @@ URL:       http://www.packagekit.org
 Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-# Fedora specific, as we want bleeding edge
-#Patch0:    gnome-packagekit-0.4.5-use-unfinished-update-viewer.patch
-
-Requires:  gtk2 >= 2.12.0
+Requires:  gtk2 >= 2.15.0
 Requires:  gnome-icon-theme
 Requires:  libnotify >= 0.4.3
-Requires:  unique >= 0.9.4
+Requires:  unique >= 1.0.0
 Requires:  dbus-glib >= %{dbus_version}
 Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
@@ -39,7 +36,6 @@ Obsoletes: pirut < 1.3.31-2
 Provides:  pirut = 1.3.31-2
 
 BuildRequires: libgnomeui-devel
-BuildRequires: libglade2-devel
 BuildRequires: libwnck-devel
 BuildRequires: dbus-devel >= %{dbus_version}
 BuildRequires: libnotify-devel
@@ -167,18 +163,16 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_bindir}/gpk-repo
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
-%{_bindir}/gpk-update-viewer2
 %dir %{_datadir}/gnome-packagekit
-%{_datadir}/gnome-packagekit/gpk-application.glade
-%{_datadir}/gnome-packagekit/gpk-client.glade
-%{_datadir}/gnome-packagekit/gpk-eula.glade
-%{_datadir}/gnome-packagekit/gpk-prefs.glade
-%{_datadir}/gnome-packagekit/gpk-update-viewer.glade
-%{_datadir}/gnome-packagekit/gpk-error.glade
-%{_datadir}/gnome-packagekit/gpk-log.glade
-%{_datadir}/gnome-packagekit/gpk-repo.glade
-%{_datadir}/gnome-packagekit/gpk-signature.glade
-%{_datadir}/gnome-packagekit/gpk-update-viewer2.glade
+%{_datadir}/gnome-packagekit/gpk-application.ui
+%{_datadir}/gnome-packagekit/gpk-client.ui
+%{_datadir}/gnome-packagekit/gpk-eula.ui
+%{_datadir}/gnome-packagekit/gpk-prefs.ui
+%{_datadir}/gnome-packagekit/gpk-update-viewer.ui
+%{_datadir}/gnome-packagekit/gpk-error.ui
+%{_datadir}/gnome-packagekit/gpk-log.ui
+%{_datadir}/gnome-packagekit/gpk-repo.ui
+%{_datadir}/gnome-packagekit/gpk-signature.ui
 %dir %{_datadir}/gnome-packagekit/icons
 %dir %{_datadir}/gnome-packagekit/icons/hicolor
 %dir %{_datadir}/gnome-packagekit/icons/hicolor/*
@@ -206,11 +200,14 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/gpk-backend-status
 %{_bindir}/gpk-service-pack
-%{_datadir}/gnome-packagekit/gpk-service-pack.glade
-%{_datadir}/gnome-packagekit/gpk-backend-status.glade
+%{_datadir}/gnome-packagekit/gpk-service-pack.ui
+%{_datadir}/gnome-packagekit/gpk-backend-status.ui
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Apr 14 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-1
+- New upstream version
+
 * Mon Mar 30 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.1-1
 - New upstream version
 
