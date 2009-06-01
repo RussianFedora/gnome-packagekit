@@ -1,32 +1,43 @@
-%define dbus_version            0.61
-%define packagekit_version      0.4.5
-%define alphatag                20090414
+%define packagekit_version		0.4.5
+%define dbus_version			1.1.2
+%define dbus_glib_version		0.73
+%define glib2_version			2.18.0
+%define gtk2_version			2.16.0
+%define libnotify_version		0.4.3
+%define unique_version			1.0.0
+%define devicekit_version		003
+%define devicekit_power_version		007
+%define libcanberra_version		0.10
+#%define alphatag                20090414
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.2
-Release:   0.2.%{?alphatag}git%{?dist}
-#Release:   1%{?dist}
+#Release:   0.2.%{?alphatag}git%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
-#Source0:   http://www.packagekit.org/releases/%{name}-%{version}.tar.gz
+#Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:  gtk2 >= 2.15.0
+Requires:  glib2 >= %{glib2_version}
+Requires:  gtk2 >= %{gtk2_version}
 Requires:  gnome-icon-theme
-Requires:  libnotify >= 0.4.3
-Requires:  unique >= 1.0.0
-Requires:  dbus-glib >= %{dbus_version}
+Requires:  libnotify >= %{libnotify_version}
+Requires:  unique >= %{unique_version}
+Requires:  dbus-glib >= %{dbus_glib_version}
 Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
 Requires:  PackageKit-libs >= %{packagekit_version}
 Requires:  PackageKit-gtk-module >= %{packagekit_version}
 Requires:  shared-mime-info
 Requires:  iso-codes
+Requires:  libcanberra >= %{libcanberra_version}
+Requires:  DeviceKit-power >= %{devicekit_power_version}
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
 Requires(post):   GConf2
@@ -35,10 +46,12 @@ Requires(postun): scrollkeeper
 Obsoletes: pirut < 1.3.31-2
 Provides:  pirut = 1.3.31-2
 
-BuildRequires: libgnomeui-devel
+BuildRequires: glib2-devel >= %{glib2_version}
+BuildRequires: gtk2-devel >= %{gtk2_version}
 BuildRequires: libwnck-devel
 BuildRequires: dbus-devel >= %{dbus_version}
-BuildRequires: libnotify-devel
+BuildRequires: dbus-glib-devel >= %{dbus_glib_version}
+BuildRequires: libnotify-devel >= %{libnotify_version}
 BuildRequires: gnome-panel-devel
 BuildRequires: scrollkeeper
 BuildRequires: gnome-doc-utils >= 0.3.2
@@ -49,13 +62,16 @@ BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: gnome-doc-utils
-BuildRequires: gnome-menus-devel
+BuildRequires: gnome-menus-devel >= 2.24.1
 BuildRequires: PackageKit-devel >= %{packagekit_version}
 BuildRequires: PolicyKit-gnome-devel
-BuildRequires: unique-devel
+BuildRequires: unique-devel >= %{unique_version}
 BuildRequires: intltool
 BuildRequires: xorg-x11-proto-devel
 BuildRequires: fontconfig-devel
+BuildRequires: libcanberra-devel >= %{libcanberra_version}
+BuildRequires: DeviceKit-devel >= %{devicekit_version}
+BuildRequires: DeviceKit-power-devel >= %{devicekit_power_version}
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -68,12 +84,11 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 
 %description extra
-Extra GNOME applications for using PackageKit, for instance an advanced update
-viewer and a service pack creator.
+Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
-#%setup -q
+#%setup -q -n %{?name}-%{?version}-%{?alphatag}
+%setup -q
 #%patch0 -p1
 
 %build
@@ -205,6 +220,14 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Jun 01 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-1
+- New upstream version
+- Lots of translation updates
+- Add UI helpers for media changing
+- Lots of fixes to the update viewer and update icon
+- Fixes #493934, #492160, #496024, #496870, #497162, #500237, #502562,
+  #502589 and #492005
+
 * Tue Apr 14 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-0.2.20090414git
 - Reroll the tarball without the new PkMediaTypeEnum functionality which
   is present in git master PackageKit.
