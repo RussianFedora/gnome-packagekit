@@ -16,7 +16,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.2
 #Release:   0.2.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -219,6 +219,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Jun 02 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-2
+- Rebuild as waitrepo timed out on me during a chainbuild. Oddball.
+
 * Mon Jun 01 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-1
 - New upstream version
 - Lots of translation updates
