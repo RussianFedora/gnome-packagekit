@@ -15,14 +15,17 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.3
-Release:   0.1.%{?alphatag}git%{?dist}
-#Release:   2%{?dist}
+Release:   0.2.%{?alphatag}git%{?dist}
+#Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 #Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# from upstream polkit1 branch, automatically generated
+Patch0:    gnome-packagekit-port-to-polkit1.patch
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -64,7 +67,6 @@ BuildRequires: perl(XML::Parser)
 BuildRequires: gnome-doc-utils
 BuildRequires: gnome-menus-devel >= 2.24.1
 BuildRequires: PackageKit-devel >= %{packagekit_version}
-BuildRequires: PolicyKit-gnome-devel
 BuildRequires: unique-devel >= %{unique_version}
 BuildRequires: intltool
 BuildRequires: xorg-x11-proto-devel
@@ -72,6 +74,9 @@ BuildRequires: fontconfig-devel
 BuildRequires: libcanberra-devel >= %{libcanberra_version}
 BuildRequires: DeviceKit-devel >= %{devicekit_version}
 BuildRequires: DeviceKit-power-devel >= %{devicekit_power_version}
+
+# low level icky tools (due to polkit1 patch)
+BuildRequires: automake, autoconf, libtool
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -89,7 +94,10 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 %prep
 %setup -q -n %{?name}-%{?version}-%{?alphatag}
 #%setup -q
-#%patch0 -p1
+%patch0 -p1 -b .polkit1
+
+# we messed about with configure.ac and Makefile.am, so regenerate (due to polkit1 patch)
+autoreconf
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -220,6 +228,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Jun 16 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-0.2.20090616git
+- Apply a patch to convert to the PolKit1 API.
+- Do autoreconf as the polkit patch is pretty invasive
+
 * Tue Jun 16 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-0.1.20090616git
 - Update to todays git snapshot
 - Connect to gnome-session to get the idle status, not gnome-screensaver
