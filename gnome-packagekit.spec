@@ -8,14 +8,14 @@
 %define devicekit_version		003
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20090616
+%define alphatag			20090625
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.3
-Release:   0.2.%{?alphatag}git%{?dist}
+Release:   0.3.%{?alphatag}git%{?dist}
 #Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -228,6 +228,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Thu Jun 25 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-0.3.20090625git
+- Update to latest git master snapshot
+
 * Tue Jun 16 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-0.2.20090616git
 - Apply a patch to convert to the PolKit1 API.
 - Do autoreconf as the polkit patch is pretty invasive
