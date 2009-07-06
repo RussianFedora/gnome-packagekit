@@ -1,4 +1,4 @@
-%define packagekit_version		0.4.5
+%define packagekit_version		0.4.8
 %define dbus_version			1.1.2
 %define dbus_glib_version		0.73
 %define glib2_version			2.18.0
@@ -14,7 +14,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.2
+Version:   2.27.3
 #Release:   0.2.%{?alphatag}git%{?dist}
 Release:   1%{?dist}
 License:   GPLv2+
@@ -220,6 +220,16 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Jul 06 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-1
+- New upstream version
+ - Lots of updated translations
+ - Check for dependancies before downloading updates in the update viewer
+ - Connect to gnome-session to get the idle status, not gnome-screensaver
+ - Don't show a generic icon when we have messages
+ - Use the newest filter by default in the update viewer
+ - Run all the packages after install, not just the selected package
+- Fixes #506010, #507062, #508505, #509067, #509104 and #509636
+
 * Mon Jun 01 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.2-1
 - New upstream version
 - Lots of translation updates
