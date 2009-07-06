@@ -1,4 +1,4 @@
-%define packagekit_version		0.4.5
+%define packagekit_version		0.5.0
 %define dbus_version			1.1.2
 %define dbus_glib_version		0.73
 %define glib2_version			2.18.0
@@ -15,13 +15,13 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.3
-Release:   0.3.%{?alphatag}git%{?dist}
-#Release:   1%{?dist}
+#Release:   0.4.%{?alphatag}git%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # from upstream polkit1 branch, automatically generated
@@ -92,8 +92,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
-#%setup -q
+#%setup -q -n %{?name}-%{?version}-%{?alphatag}
+%setup -q
 %patch0 -p1 -b .polkit1
 
 # we messed about with configure.ac and Makefile.am, so regenerate (due to polkit1 patch)
@@ -228,6 +228,21 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Jul 06 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-1
+- New upstream version
+ - Lots of updated translations
+ - Check for dependancies before downloading updates in the update viewer
+ - Connect to gnome-session to get the idle status, not gnome-screensaver
+ - Don't show a generic icon when we have messages
+ - Use the newest filter by default in the update viewer
+ - Run all the packages after install, not just the selected package
+- Fixes #506010, #507062, #508505, #509067, #509104 and #509636
+
+* Thu Jun 25 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-0.4.20090625git
+- Don't build with GDK_MULTIHEAD_SAFE as it breaks ca_gtk_context_get with a
+  new libcanberra-gtk. Ifdefs probably required as ca_gtk_context_get_for_screen
+  is fairly new.
+
 * Thu Jun 25 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-0.3.20090625git
 - Update to latest git master snapshot
 

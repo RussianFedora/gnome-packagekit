@@ -1,5 +1,5 @@
 diff --git a/configure.ac b/configure.ac
-index 9f0eadb..e6d8132 100644
+index 4e1a1e6..a94365e 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -88,7 +88,6 @@ DBUS_REQUIRED=1.1.2
@@ -50,10 +50,10 @@ index 2b8965e..e287290 100644
  	$(DEVKIT_LIBS)					\
  	$(CANBERRA_LIBS)				\
 diff --git a/src/gpk-application.c b/src/gpk-application.c
-index 501c55c..730c544 100644
+index ed36068..25681e1 100644
 --- a/src/gpk-application.c
 +++ b/src/gpk-application.c
-@@ -28,7 +28,6 @@
+@@ -29,7 +29,6 @@
  #include <gconf/gconf-client.h>
  #include <math.h>
  #include <string.h>
@@ -62,7 +62,7 @@ index 501c55c..730c544 100644
  
  #include "egg-debug.h"
 diff --git a/src/gpk-common.c b/src/gpk-common.c
-index 101b752..6bda9de 100644
+index c226419..3a331d3 100644
 --- a/src/gpk-common.c
 +++ b/src/gpk-common.c
 @@ -29,7 +29,6 @@
@@ -475,7 +475,7 @@ index 797fa40..3991b23 100644
  	G_OBJECT_CLASS (gpk_dbus_parent_class)->finalize (object);
  }
 diff --git a/src/gpk-watch.c b/src/gpk-watch.c
-index 6a25c9d..cd5a1b1 100644
+index 887e703..9350af8 100644
 --- a/src/gpk-watch.c
 +++ b/src/gpk-watch.c
 @@ -37,7 +37,6 @@
@@ -494,7 +494,7 @@ index 6a25c9d..cd5a1b1 100644
  	guint			 set_proxy_timeout;
  	gchar			*error_details;
  	gboolean		 hide_warning;
-@@ -786,15 +784,6 @@ gpk_watch_popup_menu_cb (GtkStatusIcon *status_icon, guint button, guint32 times
+@@ -807,15 +805,6 @@ gpk_watch_popup_menu_cb (GtkStatusIcon *status_icon, guint button, guint32 times
  }
  
  /**
@@ -510,7 +510,7 @@ index 6a25c9d..cd5a1b1 100644
   * gpk_watch_menu_show_messages_cb:
   **/
  static void
-@@ -1226,6 +1215,15 @@ gpk_watch_menu_log_out_cb (GtkMenuItem *item, gpointer data)
+@@ -1247,6 +1236,15 @@ gpk_watch_menu_log_out_cb (GtkMenuItem *item, gpointer data)
  }
  
  /**
@@ -526,7 +526,7 @@ index 6a25c9d..cd5a1b1 100644
   * gpk_watch_activate_status_cb:
   * @button: Which buttons are pressed
   *
-@@ -1262,6 +1260,7 @@ gpk_watch_activate_status_cb (GtkStatusIcon *status_icon, GpkWatch *watch)
+@@ -1283,6 +1281,7 @@ gpk_watch_activate_status_cb (GtkStatusIcon *status_icon, GpkWatch *watch)
  
  	/* log out session */
  	if (watch->priv->restart == PK_RESTART_ENUM_SESSION) {
@@ -534,7 +534,7 @@ index 6a25c9d..cd5a1b1 100644
  		widget = gtk_image_menu_item_new_with_mnemonic (_("_Log out"));
  		image = gtk_image_new_from_icon_name ("system-log-out", GTK_ICON_SIZE_MENU);
  		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (widget), image);
-@@ -1273,7 +1272,12 @@ gpk_watch_activate_status_cb (GtkStatusIcon *status_icon, GpkWatch *watch)
+@@ -1294,7 +1293,12 @@ gpk_watch_activate_status_cb (GtkStatusIcon *status_icon, GpkWatch *watch)
  
  	/* restart computer */
  	if (watch->priv->restart == PK_RESTART_ENUM_SYSTEM) {
@@ -548,7 +548,7 @@ index 6a25c9d..cd5a1b1 100644
  		gtk_menu_shell_append (GTK_MENU_SHELL (menu), widget);
  		show_hide = TRUE;
  	}
-@@ -1566,9 +1570,6 @@ gpk_watch_button_cancel_cb (GtkWidget *widget, GpkWatch *watch)
+@@ -1587,9 +1591,6 @@ gpk_watch_button_cancel_cb (GtkWidget *widget, GpkWatch *watch)
  static void
  gpk_watch_init (GpkWatch *watch)
  {
@@ -558,7 +558,7 @@ index 6a25c9d..cd5a1b1 100644
  	watch->priv = GPK_WATCH_GET_PRIVATE (watch);
  	watch->priv->error_details = NULL;
  	watch->priv->notification_cached_messages = NULL;
-@@ -1633,23 +1634,6 @@ gpk_watch_init (GpkWatch *watch)
+@@ -1654,23 +1655,6 @@ gpk_watch_init (GpkWatch *watch)
  	if (pk_connection_valid (watch->priv->pconnection))
  		pk_connection_changed_cb (watch->priv->pconnection, TRUE, watch);
  
@@ -582,7 +582,7 @@ index 6a25c9d..cd5a1b1 100644
  	/* watch proxy keys */
  	gconf_client_add_dir (watch->priv->gconf_client, GPK_WATCH_GCONF_PROXY_HTTP,
  			      GCONF_CLIENT_PRELOAD_NONE, NULL);
-@@ -1698,7 +1682,6 @@ gpk_watch_finalize (GObject *object)
+@@ -1719,7 +1703,6 @@ gpk_watch_finalize (GObject *object)
  	g_object_unref (watch->priv->control);
  	g_object_unref (watch->priv->pconnection);
  	g_object_unref (watch->priv->gconf_client);
