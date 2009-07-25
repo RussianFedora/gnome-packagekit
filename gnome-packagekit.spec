@@ -16,7 +16,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.3
 #Release:   0.4.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -228,6 +228,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.27.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Mon Jul 06 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-1
 - New upstream version
  - Lots of updated translations
