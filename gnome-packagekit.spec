@@ -8,24 +8,21 @@
 %define devicekit_version		003
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20090625
+%define alphatag			20090727
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.3
-#Release:   0.4.%{?alphatag}git%{?dist}
-Release:   2%{?dist}
+Version:   2.27.4
+Release:   0.1.%{?alphatag}git%{?dist}
+#Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-# from upstream polkit1 branch, automatically generated
-Patch0:    gnome-packagekit-port-to-polkit1.patch
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -75,9 +72,6 @@ BuildRequires: libcanberra-devel >= %{libcanberra_version}
 BuildRequires: DeviceKit-devel >= %{devicekit_version}
 BuildRequires: DeviceKit-power-devel >= %{devicekit_power_version}
 
-# low level icky tools (due to polkit1 patch)
-BuildRequires: automake, autoconf, libtool
-
 %description
 gnome-packagekit provides session applications for the PackageKit API.
 There are several utilities designed for installing, updating and
@@ -92,12 +86,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-#%setup -q -n %{?name}-%{?version}-%{?alphatag}
-%setup -q
-%patch0 -p1 -b .polkit1
-
-# we messed about with configure.ac and Makefile.am, so regenerate (due to polkit1 patch)
-autoreconf
+%setup -q -n %{?name}-%{?version}-%{?alphatag}
+#%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -108,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
+
+# nuke the ChangeLog file, it's huge
+rm -f $RPM_BUILD_ROOT%{_datadir}/doc/gnome-packagekit-*/ChangeLog
 
 desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
@@ -178,7 +171,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING NEWS README
+%doc AUTHORS COPYING NEWS README
 %{_bindir}/gpk-application
 %{_bindir}/gpk-install-*
 %{_bindir}/gpk-log
@@ -220,7 +213,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %files extra
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING NEWS README
+%doc AUTHORS COPYING NEWS README
 %{_bindir}/gpk-backend-status
 %{_bindir}/gpk-service-pack
 %{_datadir}/gnome-packagekit/gpk-service-pack.ui
@@ -228,6 +221,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Jul 27 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.4-0.1.20090727git
+- Update to latest git master snapshot
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.27.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
