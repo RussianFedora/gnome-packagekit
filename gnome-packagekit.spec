@@ -14,14 +14,14 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.4
-Release:   0.1.%{?alphatag}git%{?dist}
-#Release:   2%{?dist}
+Version:   2.27.5
+#Release:   0.1.%{?alphatag}git%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -86,8 +86,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
-#%setup -q
+#%setup -q -n %{?name}-%{?version}-%{?alphatag}
+%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -117,19 +117,19 @@ done
 helpdir=$RPM_BUILD_ROOT%{_datadir}/gnome/help/%{name}
 for f in $helpdir/C/figures/*.png; do
   b="$(basename $f)"
-  for d in $helpdir/*; do 
+  for d in $helpdir/*; do
     if [ -d "$d" -a "$d" != "$helpdir/C" ]; then
       g="$d/figures/$b"
       if [ -f "$g" ]; then
         if cmp -s $f $g; then
           rm "$g"; ln -s "../../C/figures/$b" "$g"
-        fi  
-      fi 
-    fi 
+        fi
+      fi
+    fi
   done
 done
 
-%find_lang %name
+%find_lang %name --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -221,6 +221,13 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Aug 03 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.5-1
+- New upstream version
+- Port all the code to using PolicyKit1 rather than PolicyKit
+- Reduce the size displayed as the package is downloaded
+- Scroll to the package being processed in the update list
+- Fixes #510730, #510984, #510730, #497737 and #514879
+
 * Mon Jul 27 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.4-0.1.20090727git
 - Update to latest git master snapshot
 
