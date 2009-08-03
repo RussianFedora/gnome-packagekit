@@ -16,7 +16,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.5
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -207,8 +207,6 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-install-file.desktop
 %{_datadir}/applications/gpk-prefs.desktop
 %{_datadir}/applications/gpk-install-catalog.desktop
-%{_datadir}/applications/gpk-log.desktop
-%{_datadir}/applications/gpk-repo.desktop
 %{_datadir}/applications/gpk-update-viewer.desktop
 
 %files extra
@@ -219,8 +217,14 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/gnome-packagekit/gpk-service-pack.ui
 %{_datadir}/gnome-packagekit/gpk-backend-status.ui
 %{_datadir}/applications/gpk-service-pack.desktop
+%{_datadir}/applications/gpk-repo.desktop
+%{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Aug 03 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.5-2
+- Move the gpk-log and gpk-repo menu shortcuts to the gnome-packagekit-extra
+  subpackage to reduce menu polution on the live cd.
+
 * Mon Aug 03 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.5-1
 - New upstream version
 - Port all the code to using PolicyKit1 rather than PolicyKit
