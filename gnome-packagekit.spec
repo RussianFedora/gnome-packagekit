@@ -16,12 +16,12 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.5
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.bz2
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -221,6 +221,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Tue Aug 11 2009 Ville Skyttä <ville.skytta@iki.fi> - 2.27.5-3
+- Use bzipped upstream tarball.
+
 * Mon Aug 03 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.5-2
 - Move the gpk-log and gpk-repo menu shortcuts to the gnome-packagekit-extra
   subpackage to reduce menu polution on the live cd.
