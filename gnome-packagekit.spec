@@ -14,9 +14,9 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.5
+Version:   2.27.91
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   3%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -34,6 +34,7 @@ Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
 Requires:  PackageKit-libs >= %{packagekit_version}
 Requires:  PackageKit-gtk-module >= %{packagekit_version}
+Requires:  PackageKit-device-rebind >= %{packagekit_version}
 Requires:  shared-mime-info
 Requires:  iso-codes
 Requires:  libcanberra >= %{libcanberra_version}
@@ -69,6 +70,7 @@ BuildRequires: intltool
 BuildRequires: xorg-x11-proto-devel
 BuildRequires: fontconfig-devel
 BuildRequires: libcanberra-devel >= %{libcanberra_version}
+BuildRequires: libgudev1-devel
 BuildRequires: DeviceKit-devel >= %{devicekit_version}
 BuildRequires: DeviceKit-power-devel >= %{devicekit_power_version}
 
@@ -221,6 +223,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Aug 24 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.91-1
+- New upstream version
+
 * Tue Aug 11 2009 Ville Skyttä <ville.skytta@iki.fi> - 2.27.5-3
 - Use bzipped upstream tarball.
 
