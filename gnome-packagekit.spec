@@ -8,15 +8,15 @@
 %define devicekit_version		003
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20090727
+#%define alphatag			20090727
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.91
+Version:   2.27.92
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   2%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -223,6 +223,12 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Sep 07 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.92-1
+- New upstream version.
+- Many updated translations.
+- Add simulation of installed files.
+- Don't show duplicate package names in the reboot tooltip.
+
 * Mon Aug 24 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.91-2
 - Actually upload the correct tarball.
 
