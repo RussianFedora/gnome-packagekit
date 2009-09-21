@@ -14,14 +14,14 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.27.92
+Version:   2.28.0
 #Release:   0.1.%{?alphatag}git%{?dist}
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.bz2
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}-%{?alphatag}.tar.bz2
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.bz2
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}-%{?alphatag}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -223,6 +223,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Sep 21 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.0-1
+- New upstream version.
+
 * Mon Sep 07 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.92-1
 - New upstream version.
 - Many updated translations.
