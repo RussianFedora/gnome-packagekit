@@ -7,7 +7,7 @@
 %define unique_version			1.0.0
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20091029
+%define alphatag			20091030
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
@@ -221,6 +221,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Fri Oct 30 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.2-0.1.20091030git
+- New snapshot from the gnome-2-28 branch
+- Have a better stab at #530264
+
 * Thu Oct 29 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.2-0.1.20091029git
 - New snapshot from the gnome-2-28 branch
 - Many updated translations.
