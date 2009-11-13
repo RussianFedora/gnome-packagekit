@@ -16,13 +16,16 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.27.3
 #Release:   0.2.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 #Source0:   http://www.packagekit.org/releases/%{name}-%{version}-%{?alphatag}.tar.gz
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.27/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# not upstream as this is just a bodge disable until F12's preupgrade is fixed
+Patch0:    gnome-packagekit-disable-preupgrade.patch
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -89,7 +92,7 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 %prep
 #%setup -q -n %{?name}-%{?version}-%{?alphatag}
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -220,6 +223,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Fri Nov 13 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-2
+- Disable preupgrade until F12 is fixed.
+
 * Mon Jul 06 2009 Richard Hughes  <rhughes@redhat.com> - 2.27.3-1
 - New upstream version
  - Lots of updated translations

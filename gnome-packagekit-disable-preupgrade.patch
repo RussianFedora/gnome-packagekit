@@ -1,0 +1,16 @@
+diff -urNp gnome-packagekit-2.27.3.old/src/gpk-auto-refresh.c gnome-packagekit-2.27.3/src/gpk-auto-refresh.c
+--- gnome-packagekit-2.27.3.old/src/gpk-auto-refresh.c	2009-06-16 11:18:00.000000000 +0100
++++ gnome-packagekit-2.27.3/src/gpk-auto-refresh.c	2009-11-13 15:45:51.000000000 +0000
+@@ -144,6 +144,12 @@ gpk_auto_refresh_signal_get_upgrades (Gp
+ {
+ 	g_return_val_if_fail (GPK_IS_AUTO_REFRESH (arefresh), FALSE);
+ 
++	/* Fedora 12's preupgrade explodes as the default /boot is too small */
++	if (TRUE) {
++		egg_warning ("disabling due to preupgrade not working");
++		return FALSE;
++	}
++
+ 	egg_debug ("emitting get-upgrades");
+ 	g_signal_emit (arefresh, signals [GET_UPGRADES], 0);
+ 	return TRUE;
