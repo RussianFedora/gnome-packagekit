@@ -14,13 +14,13 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.28.2
-Release:   0.2.%{?alphatag}git%{?dist}
-#Release:   1%{?dist}
+#Release:   0.2.%{?alphatag}git%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.bz2
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -86,8 +86,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
-#%setup -q
+#%setup -q -n %{?name}-%{?version}-%{?alphatag}
+%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -221,10 +221,15 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Dec 07 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.2-1
+- Update to 2.28.2
+- Remove the original package from the dep-confirmation screen (Richard Hughes)
+- Ignore generic errors such as 'Failed' and do not show UI in this case (Richard Hughes)
+- Use the desktop icon when we unselect the installed application in gpk-application. Fixes fd#25098 (Richard Hughes)
+
 * Mon Nov 16 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.2-0.2.20091116git
 - New snapshot from the gnome-2-28 branch
 - Use the desktop icon when we unselect the installed application in gpk-application.
-- Updated Simplified Chinese translation.
 - Added and Updated translations.
 - Fix crash when removing certain packages with gpk-application.
 - Only wait 3 seconds (not 60) when we get the updates changed signal
