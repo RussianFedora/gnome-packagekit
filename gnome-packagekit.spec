@@ -7,20 +7,20 @@
 %define unique_version			1.0.0
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20091116
+%define alphatag			20091211
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.28.2
-#Release:   0.2.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Version:   2.28.3
+Release:   0.1.%{?alphatag}git%{?dist}
+#Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.gz
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}-%{?alphatag}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -86,8 +86,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-#%setup -q -n %{?name}-%{?version}-%{?alphatag}
-%setup -q
+%setup -q -n %{?name}-%{?version}-%{?alphatag}
+#%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -221,11 +221,17 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Dec 11 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.3-0.1.20091211git
+- New snapshot from the gnome-2-28 branch
+- Don't show the selected packages as deps of the to be updated packages.
+  Note, this only affects PackageKit >= 0.5.5. Fixes rh#546247
+- Check the GpkDbusTask object only replies once to each session request
+
 * Mon Dec 07 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.2-1
 - Update to 2.28.2
-- Remove the original package from the dep-confirmation screen (Richard Hughes)
-- Ignore generic errors such as 'Failed' and do not show UI in this case (Richard Hughes)
-- Use the desktop icon when we unselect the installed application in gpk-application. Fixes fd#25098 (Richard Hughes)
+- Remove the original package from the dep-confirmation screen
+- Ignore generic errors such as 'Failed' and do not show UI in this case
+- Use the desktop icon when we unselect the installed application in gpk-application. Fixes fd#25098
 
 * Mon Nov 16 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.2-0.2.20091116git
 - New snapshot from the gnome-2-28 branch
