@@ -13,7 +13,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.29.1
+Version:   2.29.2
 #Release:   0.1.%{?alphatag}git%{?dist}
 Release:   1%{?dist}
 License:   GPLv2+
@@ -179,6 +179,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_bindir}/gpk-repo
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
+%{_bindir}/gpk-dbus-service
 %dir %{_datadir}/gnome-packagekit
 %{_datadir}/gnome-packagekit/gpk-application.ui
 %{_datadir}/gnome-packagekit/gpk-client.ui
@@ -208,6 +209,7 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-prefs.desktop
 %{_datadir}/applications/gpk-install-catalog.desktop
 %{_datadir}/applications/gpk-update-viewer.desktop
+%{_datadir}/dbus-1/services/org.freedesktop.PackageKit.service
 
 %files extra
 %defattr(-,root,root,-)
@@ -221,6 +223,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Tue Jan 05 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.2-1
+- New upstream version.
+
 * Tue Dec 08 2009 Richard Hughes  <rhughes@redhat.com> - 2.29.1-1
 - New upstream version.
 
