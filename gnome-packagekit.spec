@@ -13,7 +13,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.29.2
+Version:   2.29.3
 #Release:   0.1.%{?alphatag}git%{?dist}
 Release:   1%{?dist}
 License:   GPLv2+
@@ -223,6 +223,12 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Feb 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.3-1
+- New upstream version.
+- Filter by the timespec in gpk-log, not the localised date. Fixes #544667
+- Re-get the update list in the update viewer if the network changes. Fixes #543871
+- Don't hide the restart status icon just because the daemon exited. Fixes #553966
+
 * Tue Jan 05 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.2-1
 - New upstream version.
 
