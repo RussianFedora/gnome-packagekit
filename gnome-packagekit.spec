@@ -15,7 +15,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.29.3
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -223,6 +223,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Feb 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.3-2
+- Rebuild now the new PK has hit koji.
+
 * Mon Feb 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.3-1
 - New upstream version.
 - Filter by the timespec in gpk-log, not the localised date. Fixes #544667
