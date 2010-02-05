@@ -15,7 +15,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.29.3
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -45,6 +45,9 @@ Requires(preun):  GConf2
 Requires(postun): scrollkeeper
 Obsoletes: pirut < 1.3.31-2
 Provides:  pirut = 1.3.31-2
+
+# required because KPackageKit provides exactly the same interface
+Provides: PackageKit-session-service
 
 BuildRequires: glib2-devel >= %{glib2_version}
 BuildRequires: gtk2-devel >= %{gtk2_version}
@@ -223,6 +226,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Fri Feb 05 2010 Richard Hughes  <rhughes@redhat.com> - 0.6.0-0.3.20100111
+- Add Provides: PackageKit-session-service
+- Resolves #561437
+
 * Mon Feb 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.3-2
 - Rebuild now the new PK has hit koji.
 
