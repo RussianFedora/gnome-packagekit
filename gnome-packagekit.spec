@@ -7,20 +7,20 @@
 %define unique_version			1.0.0
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20090928
+%define alphatag			20100210
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.29.3
-#Release:   0.1.%{?alphatag}git%{?dist}
-Release:   3%{?dist}
+Version:   2.29.4
+Release:   0.1.%{?alphatag}git%{?dist}
+#Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}.tar.gz
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}-%{?alphatag}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -89,8 +89,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-#%setup -q -n %{?name}-%{?version}-%{?alphatag}
-%setup -q
+%setup -q -n %{?name}-%{?version}-%{?alphatag}
+#%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -226,6 +226,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Wed Feb 10 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.4-0.1.20100210git
+- New snapshot from the master branch
+
 * Fri Feb 05 2010 Richard Hughes  <rhughes@redhat.com> - 0.6.0-0.3.20100111
 - Add Provides: PackageKit-session-service
 - Resolves #561437
