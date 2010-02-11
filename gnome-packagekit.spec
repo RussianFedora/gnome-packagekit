@@ -7,7 +7,7 @@
 %define unique_version			1.0.0
 %define devicekit_power_version		007
 %define libcanberra_version		0.10
-%define alphatag			20100210
+%define alphatag			20100211
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
@@ -226,6 +226,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Thu Feb 11 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.4-0.1.20100211git
+- New snapshot from the master branch
+- Should get Tim's printer installing working correctly.
+
 * Wed Feb 10 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.4-0.1.20100210git
 - New snapshot from the master branch
 
