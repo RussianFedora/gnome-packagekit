@@ -1,0 +1,12 @@
+diff -up gnome-packagekit-2.29.4-20100211/src/gpk-update-viewer.c.infinite-loop gnome-packagekit-2.29.4-20100211/src/gpk-update-viewer.c
+--- gnome-packagekit-2.29.4-20100211/src/gpk-update-viewer.c.infinite-loop	2010-02-24 15:08:48.812429637 -0500
++++ gnome-packagekit-2.29.4-20100211/src/gpk-update-viewer.c	2010-02-24 15:09:52.382180371 -0500
+@@ -407,6 +407,8 @@ gpk_update_viewer_are_all_updates_select
+ 					    -1);
+ 			if (!selected)
+ 				goto out;
++
++		        child_valid = gtk_tree_model_iter_next (model, &child_iter);
+ 		}
+ 
+ 		valid = gtk_tree_model_iter_next (model, &iter);
