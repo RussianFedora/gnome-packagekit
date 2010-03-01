@@ -13,14 +13,14 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.29.4
-Release:   0.1.%{?alphatag}git%{?dist}
-#Release:   3%{?dist}
+Version:   2.29.91
+#Release:   0.1.%{?alphatag}git%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}.tar.gz
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}-%{?alphatag}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -89,8 +89,8 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
-#%setup -q
+#%setup -q -n %{?name}-%{?version}-%{?alphatag}
+%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -226,6 +226,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Mar 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-1
+- New upstream version.
+
 * Thu Feb 11 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.4-0.1.20100222git
 - New snapshot from the master branch
 - Should get rid of some funky error dialogs.
