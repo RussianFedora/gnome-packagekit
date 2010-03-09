@@ -15,7 +15,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.29.91
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -145,7 +145,7 @@ update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %pre
-gconf_schema_prepare gnome-packagekit.schemas
+%gconf_schema_prepare gnome-packagekit.schemas
 
 %preun
 %gconf_schema_remove gnome-packagekit.schemas
@@ -212,6 +212,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-2
+- Use the _correct_ gconf_schema defines for the GConf schemas :-)
+
 * Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-1
 - New upstream version.
 - Update to the latest version of the Fedora Packaging Guidelines
