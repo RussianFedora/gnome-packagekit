@@ -15,7 +15,7 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.29.91
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -136,7 +136,7 @@ done
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%gconf_schema_upgrade gnome-packagekit.schemas
+%gconf_schema_upgrade gnome-packagekit
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
@@ -145,10 +145,10 @@ update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %pre
-%gconf_schema_prepare gnome-packagekit.schemas
+%gconf_schema_prepare gnome-packagekit
 
 %preun
-%gconf_schema_remove gnome-packagekit.schemas
+%gconf_schema_remove gnome-packagekit
 
 %postun
 touch --no-create %{_datadir}/icons/hicolor
@@ -212,6 +212,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-3
+- It appears gconf_schema appends .schemas for us. Bother.
+
 * Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-2
 - Use the _correct_ gconf_schema defines for the GConf schemas :-)
 
