@@ -15,12 +15,12 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.30.0
 #Release:   0.1.%{?alphatag}git%{?dist}
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}.tar.gz
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}.tar.gz
+#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}-%{?alphatag}.tar.gz
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -139,7 +139,7 @@ update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %pre
-gconf_schema_prepare gnome-packagekit
+%gconf_schema_prepare gnome-packagekit
 
 %preun
 %gconf_schema_remove gnome-packagekit
@@ -206,6 +206,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Mar 29 2010 Richard Hughes <rhughes@redhat.com> - 2.30.0-3
+- Fix a gconf_schema_prepare macro typo and the source URL.
+
 * Mon Mar 29 2010 Richard Hughes <rhughes@redhat.com> - 2.30.0-2
 - Actually upload the source tarball.
 
