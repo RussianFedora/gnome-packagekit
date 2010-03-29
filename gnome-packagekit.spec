@@ -1,19 +1,19 @@
-%define packagekit_version		0.5.0
-%define dbus_version			1.1.2
-%define dbus_glib_version		0.73
-%define glib2_version			2.18.0
-%define gtk2_version			2.16.0
-%define libnotify_version		0.4.3
-%define unique_version			1.0.0
-%define devicekit_power_version		007
-%define libcanberra_version		0.10
-%define alphatag			20100222
+%define packagekit_version              0.5.0
+%define dbus_version                    1.1.2
+%define dbus_glib_version               0.73
+%define glib2_version                   2.18.0
+%define gtk2_version                    2.16.0
+%define libnotify_version               0.4.3
+%define unique_version                  1.0.0
+%define devicekit_power_version         007
+%define libcanberra_version             0.10
+%define alphatag                        20100222
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.29.91
+Version:   2.30.0
 #Release:   0.1.%{?alphatag}git%{?dist}
 Release:   1%{?dist}
 License:   GPLv2+
@@ -21,22 +21,15 @@ Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}.tar.gz
 #Source0:   http://download.gnome.org/sources/gnome-packagekit/2.29/%{name}-%{version}-%{?alphatag}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
 Requires:  gnome-icon-theme
-Requires:  libnotify >= %{libnotify_version}
-Requires:  unique >= %{unique_version}
-Requires:  dbus-glib >= %{dbus_glib_version}
-Requires:  dbus-x11 >= %{dbus_version}
 Requires:  PackageKit >= %{packagekit_version}
-Requires:  PackageKit-libs >= %{packagekit_version}
 Requires:  PackageKit-gtk-module >= %{packagekit_version}
 Requires:  PackageKit-device-rebind >= %{packagekit_version}
 Requires:  shared-mime-info
 Requires:  iso-codes
-Requires:  libcanberra >= %{libcanberra_version}
 Requires:  DeviceKit-power >= %{devicekit_power_version}
 Requires(post):   scrollkeeper
 Requires(pre):    GConf2
@@ -97,7 +90,6 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
@@ -138,10 +130,7 @@ done
 rm -rf $RPM_BUILD_ROOT
 
 %post
-export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-gconftool-2 --makefile-install-rule \
-        %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas >/dev/null || :
-scrollkeeper-update -q &> /dev/null || :
+%gconf_schema_upgrade gnome-packagekit
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
@@ -150,21 +139,12 @@ update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %pre
-if [ "$1" -gt 1 ]; then
-    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-    gconftool-2 --makefile-uninstall-rule \
-      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas &> /dev/null || :
-fi
+gconf_schema_prepare gnome-packagekit
 
 %preun
-if [ "$1" -eq 0 ]; then
-    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-    gconftool-2 --makefile-uninstall-rule \
-      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas &> /dev/null || :
-fi
+%gconf_schema_remove gnome-packagekit
 
 %postun
-scrollkeeper-update -q &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
@@ -226,6 +206,14 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Mar 29 2010 Richard Hughes <rhughes@redhat.com> - 2.30.0-1
+- New upstream version.
+- Update to the latest version of the Fedora Packaging Guidelines
+- Do not run scrollkeeper-update
+- Remove the custom BuildRoot
+- Do not clean the buildroot before install
+- Use the gconf_schema defines for the GConf schemas
+
 * Mon Mar 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-1
 - New upstream version.
 
