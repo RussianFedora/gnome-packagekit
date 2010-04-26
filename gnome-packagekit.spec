@@ -12,15 +12,12 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.30.0
-Release:   2%{?dist}
+Version:   2.30.1
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}.tar.gz
-
-# Already upstream
-Patch0:    gnome-packagekit-2.31.1-fix-session-interface.patch
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -83,7 +80,6 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
 %setup -q
-%patch0 -p1 -b .fix-session-interface
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -206,6 +202,12 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Apr 26 2010 Richard Hughes <rhughes@redhat.com> - 2.30.1-1
+- New upstream version.
+- Fix a few non-critical UI issues in the update viewer.
+- Fix a crash where the desktop file that was installed has no root directory.
+- Resolves: #581682
+
 * Wed Apr 07 2010 Richard Hughes <richard@hughsie.com> 2.30.0-2
 - Fix the session interface to accept queries from non-blacklisted programs.
 
