@@ -7,20 +7,17 @@
 %define unique_version                  1.0.0
 %define devicekit_power_version         007
 %define libcanberra_version             0.10
-%define alphatag                        20100222
 
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.30.0
-#Release:   0.1.%{?alphatag}git%{?dist}
-Release:   3%{?dist}
+Version:   2.30.1
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}.tar.gz
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}-%{?alphatag}.tar.gz
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -82,7 +79,6 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-#%setup -q -n %{?name}-%{?version}-%{?alphatag}
 %setup -q
 
 %build
@@ -206,13 +202,31 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
-* Mon Mar 29 2010 Richard Hughes <rhughes@redhat.com> - 2.30.0-3
-- Fix a gconf_schema_prepare macro typo and the source URL.
+* Mon Apr 26 2010 Richard Hughes <rhughes@redhat.com> - 2.30.1-1
+- New upstream version.
+- Fix a few non-critical UI issues in the update viewer.
+- Fix a crash where the desktop file that was installed has no root directory.
+- Resolves: #581682
 
-* Mon Mar 29 2010 Richard Hughes <rhughes@redhat.com> - 2.30.0-2
-- Actually upload the source tarball.
+* Wed Apr 07 2010 Richard Hughes <richard@hughsie.com> 2.30.0-2
+- Fix the session interface to accept queries from non-blacklisted programs.
 
 * Mon Mar 29 2010 Richard Hughes <rhughes@redhat.com> - 2.30.0-1
+- New upstream version.
+
+* Mon Mar 15 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.92-0.1.20100315git
+- New snapshot from the master branch
+- Rebuild against the latest PackageKit
+- Should fix the silent failure when the simulate depsolve fails
+- Ensure that there can only eve be one update icon running in a session.
+
+* Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-3
+- It appears gconf_schema appends .schemas for us. Bother.
+
+* Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-2
+- Use the _correct_ gconf_schema defines for the GConf schemas :-)
+
+* Tue Mar 09 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-1
 - New upstream version.
 - Update to the latest version of the Fedora Packaging Guidelines
 - Do not run scrollkeeper-update
@@ -220,12 +234,8 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 - Do not clean the buildroot before install
 - Use the gconf_schema defines for the GConf schemas
 
-* Mon Mar 01 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.91-1
-- New upstream version.
-
-* Thu Feb 11 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.4-0.1.20100222git
-- New snapshot from the master branch
-- Should get rid of some funky error dialogs.
+* Wed Feb 24 2010 Matthias Clasen <mclasen@redhat.com> - 2.29.4-0.2.20100211git
+- Fix an infinite loop in the update viewer
 
 * Thu Feb 11 2010 Richard Hughes  <rhughes@redhat.com> - 2.29.4-0.1.20100211git
 - New snapshot from the master branch
