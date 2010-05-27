@@ -2,7 +2,7 @@
 %define dbus_version                    1.1.2
 %define dbus_glib_version               0.73
 %define glib2_version                   2.18.0
-%define gtk2_version                    2.16.0
+%define gtk2_version                    2.20.0
 %define libnotify_version               0.4.3
 %define unique_version                  1.0.0
 %define devicekit_power_version         007
@@ -12,7 +12,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.30.1
+Version:   2.30.2
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -202,6 +202,14 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Thu May 27 2010 Richard Hughes <rhughes@redhat.com> - 2.30.2-1
+- New upstream version.
+- Always show the search type menu icons.
+- Ignore other-updates-held-back and repo-metadata-download-failed messages.
+- Fix up a crash where installing a file failed.
+- Do not set the Add/Remove search to name but instead use the GConf defaults.
+- Resovles #530595 and #586414
+
 * Mon Apr 26 2010 Richard Hughes <rhughes@redhat.com> - 2.30.1-1
 - New upstream version.
 - Fix a few non-critical UI issues in the update viewer.
