@@ -1,37 +1,30 @@
-%define packagekit_version              0.5.0
-%define dbus_version                    1.1.2
-%define dbus_glib_version               0.73
-%define glib2_version                   2.18.0
-%define gtk2_version                    2.16.0
-%define libnotify_version               0.4.3
-%define unique_version                  1.0.0
-%define devicekit_power_version         007
-%define libcanberra_version             0.10
-
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.30.1
+Version:   2.31.1
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}.tar.gz
 
-Requires:  glib2 >= %{glib2_version}
-Requires:  gtk2 >= %{gtk2_version}
+Requires:  glib2 >= 2.18.0
+Requires:  gtk2 >= 2.16.0
 Requires:  gnome-icon-theme
-Requires:  PackageKit >= %{packagekit_version}
-Requires:  PackageKit-gtk-module >= %{packagekit_version}
-Requires:  PackageKit-device-rebind >= %{packagekit_version}
+Requires:  libnotify >= 0.4.3
+Requires:  unique >= 1.0.0
+Requires:  dbus-glib >= 0.73
+Requires:  dbus-x11 >= 1.1.2
+Requires:  PackageKit >= 0.5.0
+Requires:  PackageKit-libs >= 0.5.0
+Requires:  PackageKit-gtk-module >= 0.5.0
+Requires:  PackageKit-device-rebind >= 0.5.0
 Requires:  shared-mime-info
 Requires:  iso-codes
-Requires:  DeviceKit-power >= %{devicekit_power_version}
+Requires:  libcanberra >= 0.10
+Requires:  upower >= 0.9.0
 Requires(post):   scrollkeeper
-Requires(pre):    GConf2
-Requires(post):   GConf2
-Requires(preun):  GConf2
 Requires(postun): scrollkeeper
 Obsoletes: pirut < 1.3.31-2
 Provides:  pirut = 1.3.31-2
@@ -63,7 +56,7 @@ BuildRequires: xorg-x11-proto-devel
 BuildRequires: fontconfig-devel
 BuildRequires: libcanberra-devel >= %{libcanberra_version}
 BuildRequires: libgudev1-devel
-BuildRequires: DeviceKit-power-devel >= %{devicekit_power_version}
+BuildRequires: upower-devel >= %{upower_version}
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -82,13 +75,11 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 %setup -q
 
 %build
-%configure --disable-scrollkeeper --disable-schemas-install
+%configure --disable-scrollkeeper
 make %{?_smp_mflags}
 
 %install
-export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
-unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 # nuke the ChangeLog file, it's huge
 rm -f $RPM_BUILD_ROOT%{_datadir}/doc/gnome-packagekit-*/ChangeLog
@@ -126,19 +117,13 @@ done
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%gconf_schema_upgrade gnome-packagekit
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
 fi
 update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
-
-%pre
-%gconf_schema_prepare gnome-packagekit
-
-%preun
-%gconf_schema_remove gnome-packagekit
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %postun
 touch --no-create %{_datadir}/icons/hicolor
@@ -147,6 +132,7 @@ if [ -x /usr/bin/gtk-update-icon-cache ]; then
 fi
 update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -177,7 +163,6 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/gnome-packagekit/icons/hicolor/scalable/*/*.svg*
 %{_datadir}/icons/hicolor/*/*/*.png
 %{_datadir}/icons/hicolor/scalable/*/*.svg*
-%config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
 %{python_sitelib}/packagekit/*py*
@@ -189,6 +174,8 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-install-catalog.desktop
 %{_datadir}/applications/gpk-update-viewer.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.PackageKit.service
+%{_datadir}/glib-2.0/schemas/org.gnome.packagekit.gschema.xml
+%{_datadir}/GConf/gsettings/org.gnome.packagekit.gschema.migrate
 
 %files extra
 %defattr(-,root,root,-)
@@ -202,6 +189,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Sun Jun 06 2010 Richard Hughes <rhughes@redhat.com> - 2.31.1-1
+- New upstream version.
+
 * Mon Apr 26 2010 Richard Hughes <rhughes@redhat.com> - 2.30.1-1
 - New upstream version.
 - Fix a few non-critical UI issues in the update viewer.
