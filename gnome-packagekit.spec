@@ -14,13 +14,11 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.28.3
-Release:   0.1.%{?alphatag}git%{?dist}
-#Release:   1%{?dist}
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.gz
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}-%{?alphatag}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.28/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:  glib2 >= %{glib2_version}
@@ -86,8 +84,7 @@ Requires: %{name} = %{version}-%{release}
 Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
-%setup -q -n %{?name}-%{?version}-%{?alphatag}
-#%setup -q
+%setup -q
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -221,6 +218,16 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Tue Jun 08 2010 Richard Hughes  <rhughes@redhat.com> - 2.28.3-1
+- Update to 2.28.3
+- Translation updates
+- When we ask to logout, actually logout, rather than shutdown
+- Don't hide the restart status icon just because the daemon exited
+- Don't check for updates every day when the user had specified 'Never'
+- Allow the user to select the GPG key information to be able to verify it
+- Fix the error when the user clicks the about menu item
+- Fix a crash where the desktop file that was installed has no root directory
+
 * Mon Dec 11 2009 Richard Hughes  <rhughes@redhat.com> - 2.28.3-0.1.20091211git
 - New snapshot from the gnome-2-28 branch
 - Don't show the selected packages as deps of the to be updated packages.
