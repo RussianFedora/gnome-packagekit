@@ -3,11 +3,11 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.31.1
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.31/%{name}-%{version}.tar.gz
 
 Requires:  glib2 >= 2.18.0
 Requires:  gtk2 >= 2.16.0
@@ -24,8 +24,6 @@ Requires:  shared-mime-info
 Requires:  iso-codes
 Requires:  libcanberra >= 0.10
 Requires:  upower >= 0.9.0
-Requires(post):   scrollkeeper
-Requires(postun): scrollkeeper
 Obsoletes: pirut < 1.3.31-2
 Provides:  pirut = 1.3.31-2
 
@@ -189,6 +187,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Wed Jun 16 2010 Matthias Clasen <mclasen@redhat.com> - 2.31.1-2
+- Don't require scrollkeeper
+
 * Sun Jun 06 2010 Richard Hughes <rhughes@redhat.com> - 2.31.1-1
 - New upstream version.
 
