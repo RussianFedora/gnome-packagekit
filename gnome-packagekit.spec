@@ -2,19 +2,14 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.31.1
-Release:   2%{?dist}
+Version:   2.31.3
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.31/%{name}-%{version}.tar.gz
 
-Requires:  glib2 >= 2.18.0
-Requires:  gtk2 >= 2.16.0
 Requires:  gnome-icon-theme
-Requires:  libnotify >= 0.4.3
-Requires:  unique >= 1.0.0
-Requires:  dbus-glib >= 0.73
 Requires:  dbus-x11 >= 1.1.2
 Requires:  PackageKit >= 0.5.0
 Requires:  PackageKit-libs >= 0.5.0
@@ -30,12 +25,12 @@ Provides:  pirut = 1.3.31-2
 # required because KPackageKit provides exactly the same interface
 Provides: PackageKit-session-service
 
-BuildRequires: glib2-devel >= %{glib2_version}
-BuildRequires: gtk2-devel >= %{gtk2_version}
+BuildRequires: glib2-devel >= 2.25.8
+BuildRequires: gtk2-devel >= 2.18.1
 BuildRequires: libwnck-devel
-BuildRequires: dbus-devel >= %{dbus_version}
-BuildRequires: dbus-glib-devel >= %{dbus_glib_version}
-BuildRequires: libnotify-devel >= %{libnotify_version}
+BuildRequires: dbus-devel
+BuildRequires: dbus-glib-devel
+#BuildRequires: libnotify-devel
 BuildRequires: gnome-panel-devel
 BuildRequires: scrollkeeper
 BuildRequires: gnome-doc-utils >= 0.3.2
@@ -47,14 +42,13 @@ BuildRequires: startup-notification-devel
 BuildRequires: perl(XML::Parser)
 BuildRequires: gnome-doc-utils
 BuildRequires: gnome-menus-devel >= 2.24.1
-BuildRequires: PackageKit-devel >= %{packagekit_version}
-BuildRequires: unique-devel >= %{unique_version}
+BuildRequires: PackageKit-devel >= 0.5.0
 BuildRequires: intltool
 BuildRequires: xorg-x11-proto-devel
 BuildRequires: fontconfig-devel
-BuildRequires: libcanberra-devel >= %{libcanberra_version}
+BuildRequires: libcanberra-devel
 BuildRequires: libgudev1-devel
-BuildRequires: upower-devel >= %{upower_version}
+BuildRequires: upower-devel >= 0.9.0
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -170,6 +164,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-install-file.desktop
 %{_datadir}/applications/gpk-prefs.desktop
 %{_datadir}/applications/gpk-install-catalog.desktop
+%{_datadir}/applications/gpk-log.desktop
+%{_datadir}/applications/gpk-repo.desktop
 %{_datadir}/applications/gpk-update-viewer.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.PackageKit.service
 %{_datadir}/glib-2.0/schemas/org.gnome.packagekit.gschema.xml
@@ -183,10 +179,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-packagekit/gpk-service-pack.ui
 %{_datadir}/gnome-packagekit/gpk-backend-status.ui
 %{_datadir}/applications/gpk-service-pack.desktop
-%{_datadir}/applications/gpk-repo.desktop
-%{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Mon Jun 21 2010 Richard Hughes <rhughes@redhat.com> - 2.31.3-1
+- New upstream version.
+
 * Wed Jun 16 2010 Matthias Clasen <mclasen@redhat.com> - 2.31.1-2
 - Don't require scrollkeeper
 
