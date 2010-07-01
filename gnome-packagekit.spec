@@ -2,8 +2,8 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.31.3
-Release:   2%{?dist}
+Version:   2.31.4
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -30,7 +30,7 @@ BuildRequires: gtk2-devel >= 2.18.1
 BuildRequires: libwnck-devel
 BuildRequires: dbus-devel
 BuildRequires: dbus-glib-devel
-#BuildRequires: libnotify-devel
+BuildRequires: libnotify-devel >= 0.5.0
 BuildRequires: gnome-panel-devel
 BuildRequires: scrollkeeper
 BuildRequires: gnome-doc-utils >= 0.3.2
@@ -49,6 +49,7 @@ BuildRequires: fontconfig-devel
 BuildRequires: libcanberra-devel
 BuildRequires: libgudev1-devel
 BuildRequires: upower-devel >= 0.9.0
+BuildRequires: control-center-devel >= 2.31.4
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -103,6 +104,9 @@ for f in $helpdir/C/figures/*.png; do
   done
 done
 
+rm -f $RPM_BUILD_ROOT%{_libdir}/control-center-1/panels/*.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/control-center-1/panels/*.la
+
 %find_lang %name --with-gnome
 
 %clean
@@ -132,11 +136,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_bindir}/gpk-application
 %{_bindir}/gpk-install-*
 %{_bindir}/gpk-log
-%{_bindir}/gpk-prefs
 %{_bindir}/gpk-repo
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
 %{_bindir}/gpk-dbus-service
+%{_libdir}/control-center-1/panels/*.so
 %dir %{_datadir}/gnome-packagekit
 %{_datadir}/gnome-packagekit/gpk-application.ui
 %{_datadir}/gnome-packagekit/gpk-client.ui
@@ -181,6 +185,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Thu Jul 01 2010 Richard Hughes <rhughes@redhat.com> - 2.31.4-1
+- New upstream version.
+
 * Mon Jun 28 2010 Matthias Clasen <mclasen@redhat.com> - 2.31.3-2
 - Rebuild
 
