@@ -1,4 +1,4 @@
-%define packagekit_version              0.5.0
+%define packagekit_version              0.6.6
 %define dbus_version                    1.1.2
 %define dbus_glib_version               0.73
 %define glib2_version                   2.18.0
@@ -12,7 +12,7 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.30.2
+Version:   2.30.3
 Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
@@ -202,6 +202,17 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Wed Jul 20 2010 Richard Hughes <rhughes@redhat.com> - 2.30.3-1
+- New upstream version.
+- Fix user interaction with InstallMimeTypes.
+- Fix GetUpdates when compiled against an old version of PK.
+- Ignore message types we do not recognize.
+- Save the package lists to the specified directory, not the system default.
+- Use the correct URL in the about dialog to fix an error.
+- Only mark the find button sensitive if we have valid text.
+- Fix crash in gpk-dbus-service when looking for printer drivers
+- Resolves: #28323, #615099, #575669, #609531, #598261, #602422
+
 * Thu May 27 2010 Richard Hughes <rhughes@redhat.com> - 2.30.2-1
 - New upstream version.
 - Always show the search type menu icons.
