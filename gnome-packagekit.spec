@@ -2,8 +2,8 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.31.4
-Release:   2%{?dist}
+Version:   2.31.6
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -49,7 +49,6 @@ BuildRequires: fontconfig-devel
 BuildRequires: libcanberra-devel
 BuildRequires: libgudev1-devel
 BuildRequires: upower-devel >= 0.9.0
-BuildRequires: control-center-devel >= 2.31.4
 
 %description
 gnome-packagekit provides session applications for the PackageKit API.
@@ -68,11 +67,13 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 %setup -q
 
 %build
-%configure --disable-scrollkeeper
+%configure --disable-scrollkeeper --disable-schemas-install
 make %{?_smp_mflags}
 
 %install
+export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make install DESTDIR=$RPM_BUILD_ROOT
+unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 # nuke the ChangeLog file, it's huge
 rm -f $RPM_BUILD_ROOT%{_datadir}/doc/gnome-packagekit-*/ChangeLog
@@ -104,22 +105,35 @@ for f in $helpdir/C/figures/*.png; do
   done
 done
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/control-center-1/panels/*.a
-rm -f $RPM_BUILD_ROOT%{_libdir}/control-center-1/panels/*.la
-
 %find_lang %name --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
+export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+gconftool-2 --makefile-install-rule \
+        %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas >/dev/null || :
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
     gtk-update-icon-cache -q %{_datadir}/icons/hicolor &> /dev/null || :
 fi
 update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
-glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
+
+%pre
+if [ "$1" -gt 1 ]; then
+    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+    gconftool-2 --makefile-uninstall-rule \
+      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas &> /dev/null || :
+fi
+
+%preun
+if [ "$1" -eq 0 ]; then
+    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+    gconftool-2 --makefile-uninstall-rule \
+      %{_sysconfdir}/gconf/schemas/gnome-packagekit.schemas &> /dev/null || :
+fi
 
 %postun
 touch --no-create %{_datadir}/icons/hicolor
@@ -128,7 +142,6 @@ if [ -x /usr/bin/gtk-update-icon-cache ]; then
 fi
 update-desktop-database %{_datadir}/applications &> /dev/null || :
 update-mime-database %{_datadir}/mime &> /dev/null || :
-glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -136,11 +149,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_bindir}/gpk-application
 %{_bindir}/gpk-install-*
 %{_bindir}/gpk-log
+%{_bindir}/gpk-prefs
 %{_bindir}/gpk-repo
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
 %{_bindir}/gpk-dbus-service
-%{_libdir}/control-center-1/panels/*.so
 %dir %{_datadir}/gnome-packagekit
 %{_datadir}/gnome-packagekit/gpk-application.ui
 %{_datadir}/gnome-packagekit/gpk-client.ui
@@ -159,6 +172,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-packagekit/icons/hicolor/scalable/*/*.svg*
 %{_datadir}/icons/hicolor/*/*/*.png
 %{_datadir}/icons/hicolor/scalable/*/*.svg*
+%config(noreplace) %{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/man/man1/*.1.gz
 %{_datadir}/gnome/help/gnome-packagekit
 %{python_sitelib}/packagekit/*py*
@@ -172,8 +186,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-repo.desktop
 %{_datadir}/applications/gpk-update-viewer.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.PackageKit.service
-%{_datadir}/glib-2.0/schemas/org.gnome.packagekit.gschema.xml
-%{_datadir}/GConf/gsettings/org.gnome.packagekit.gschema.migrate
 
 %files extra
 %defattr(-,root,root,-)
@@ -185,6 +197,12 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Aug 08 2010 Richard Hughes <rhughes@redhat.com> - 2.31.6-1
+- New upstream version.
+- This is 2.31.6, which is forked from the gnome-2-30 branch.
+- If you have been using 2.31.5 or any earlier 2.31 version, then you will
+  notice the UI and functionality going back in time. This is unfortunate.
+
 * Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 2.31.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
