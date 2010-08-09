@@ -3,7 +3,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.31.6
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -36,6 +36,7 @@ BuildRequires: scrollkeeper
 BuildRequires: gnome-doc-utils >= 0.3.2
 BuildRequires: desktop-file-utils
 BuildRequires: gettext
+BuildRequires: unique-devel >= 1.0.0
 BuildRequires: libtool
 BuildRequires: cairo-devel
 BuildRequires: startup-notification-devel
@@ -197,6 +198,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Aug 08 2010 Richard Hughes <rhughes@redhat.com> - 2.31.6-2
+- Re-include libunique as a BR.
+
 * Mon Aug 08 2010 Richard Hughes <rhughes@redhat.com> - 2.31.6-1
 - New upstream version.
 - This is 2.31.6, which is forked from the gnome-2-30 branch.
