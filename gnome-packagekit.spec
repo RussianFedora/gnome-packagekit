@@ -3,7 +3,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.31.6
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -198,6 +198,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Aug 16 2010 Matthias Clasen <mclasen@redhat.com> - 2.31.6-3
+- Rebuild to work around bodhi limitations
+
 * Mon Aug 08 2010 Richard Hughes <rhughes@redhat.com> - 2.31.6-2
 - Re-include libunique as a BR.
 
