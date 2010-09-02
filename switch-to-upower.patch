@@ -1,0 +1,112 @@
+commit f79e790aaacfb812fee124da0f74a081cfc2cff2
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Wed Apr 28 19:09:49 2010 +0100
+
+    Convert to using libupower-glib, rather than devkit-power-gobject
+
+diff --git a/configure.ac b/configure.ac
+index 87b6cb2..e216f81 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -112,7 +112,7 @@ LIBNOTIFY_REQUIRED=0.4.3
+ UNIQUE_REQUIRED=1.0.0
+ GNOME_MENUS_REQUIRED=2.24.1
+ GIO_REQUIRED=2.18.0
+-DEVKIT_POWER_REQUIRED=007
++UPOWER_REQUIRED=0.9.0
+ CANBERRA_REQUIRED=0.10
+ 
+ dnl ---------------------------------------------------------------------------
+@@ -138,8 +138,8 @@ PKG_CHECK_MODULES(GNOME_MENUS, \
+  libgnome-menu >= $GNOME_MENUS_REQUIRED)
+ PKG_CHECK_MODULES(UNIQUE, \
+  unique-1.0 >= $UNIQUE_REQUIRED)
+-PKG_CHECK_MODULES(DEVKIT, [
+- devkit-power-gobject >= $DEVKIT_POWER_REQUIRED])
++PKG_CHECK_MODULES(UPOWER, [
++ upower-glib >= $UPOWER_REQUIRED])
+ PKG_CHECK_MODULES(CANBERRA, libcanberra-gtk >= $CANBERRA_REQUIRED)
+ PKG_CHECK_MODULES(X11, x11)
+ 
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 9590594..3c4507d 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -14,10 +14,10 @@ INCLUDES =						\
+ 	$(GTK_CFLAGS)					\
+ 	$(GUDEV_CFLAGS)					\
+ 	$(GNOME_MENUS_CFLAGS)				\
+-	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
++	-DI_KNOW_THE_UPOWER_API_IS_SUBJECT_TO_CHANGE	\
+ 	-DI_KNOW_THE_PACKAGEKIT_GLIB2_API_IS_SUBJECT_TO_CHANGE	\
+ 	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
+-	$(DEVKIT_CFLAGS)				\
++	$(UPOWER_CFLAGS)				\
+ 	$(CANBERRA_CFLAGS)				\
+ 	-DBINDIR=\"$(bindir)\"			 	\
+ 	-DDATADIR=\"$(datadir)\"			\
+@@ -103,7 +103,7 @@ shared_LIBS =						\
+ 	$(PACKAGEKIT_LIBS)				\
+ 	$(UNIQUE_LIBS)					\
+ 	$(GNOME_MENUS_LIBS)				\
+-	$(DEVKIT_LIBS)					\
++	$(UPOWER_LIBS)					\
+ 	$(CANBERRA_LIBS)				\
+ 	$(X11_LIBS)					\
+ 	$(NULL)
+diff --git a/src/gpk-auto-refresh.c b/src/gpk-auto-refresh.c
+index bf7f710..06d4218 100644
+--- a/src/gpk-auto-refresh.c
++++ b/src/gpk-auto-refresh.c
+@@ -35,7 +35,7 @@
+ #include <glib/gi18n.h>
+ #include <gconf/gconf-client.h>
+ #include <packagekit-glib2/packagekit.h>
+-#include <devkit-power-gobject/devicekit-power.h>
++#include <libupower-glib/upower.h>
+ 
+ #include "egg-debug.h"
+ #include "egg-string.h"
+@@ -66,7 +66,7 @@ struct GpkAutoRefreshPrivate
+ 	gboolean		 force_get_updates_login;
+ 	guint			 force_get_updates_login_timeout_id;
+ 	guint			 timeout_id;
+-	DkpClient		*client;
++	UpClient		*client;
+ 	GConfClient		*gconf_client;
+ 	GpkSession		*session;
+ 	PkControl		*control;
+@@ -509,14 +509,14 @@ gpk_auto_refresh_timeout_cb (gpointer user_data)
+  * gpk_auto_refresh_client_changed_cb:
+  **/
+ static void
+-gpk_auto_refresh_client_changed_cb (DkpClient *client, GpkAutoRefresh *arefresh)
++gpk_auto_refresh_client_changed_cb (UpClient *client, GpkAutoRefresh *arefresh)
+ {
+ 	gboolean on_battery;
+ 
+ 	g_return_if_fail (GPK_IS_AUTO_REFRESH (arefresh));
+ 
+ 	/* get the on-battery state */
+-	on_battery = dkp_client_on_battery (arefresh->priv->client);
++	on_battery = up_client_get_on_battery (arefresh->priv->client);
+ 	if (on_battery == arefresh->priv->on_battery) {
+ 		egg_debug ("same state as before, ignoring");
+ 		return;
+@@ -590,13 +590,13 @@ gpk_auto_refresh_init (GpkAutoRefresh *arefresh)
+ 	/* get network state */
+ 	pk_control_get_properties_async (arefresh->priv->control, NULL, (GAsyncReadyCallback) gpk_auto_refresh_get_properties_cb, arefresh);
+ 
+-	/* use a DkpClient */
+-	arefresh->priv->client = dkp_client_new ();
++	/* use a UpClient */
++	arefresh->priv->client = up_client_new ();
+ 	g_signal_connect (arefresh->priv->client, "changed",
+ 			  G_CALLBACK (gpk_auto_refresh_client_changed_cb), arefresh);
+ 
+ 	/* get the battery state */
+-	arefresh->priv->on_battery = dkp_client_on_battery (arefresh->priv->client);
++	arefresh->priv->on_battery = up_client_get_on_battery (arefresh->priv->client);
+ 	egg_debug ("setting on battery %i", arefresh->priv->on_battery);
+ 
+ 	/* use gnome-session for the idle detection */
