@@ -2,16 +2,12 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.31.91
-Release:   2%{?dist}
+Version:   2.32.0
+Release:   0%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.31/%{name}-%{version}.tar.gz
-
-# Already upstream
-Patch0:    switch-to-upower.patch
-Patch1:    fix-update-viewer-crash.patch
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.32/%{name}-%{version}.tar.gz
 
 Requires:  gnome-icon-theme
 Requires:  dbus-x11 >= 1.1.2
@@ -70,8 +66,6 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
 %setup -q
-%patch0 -p1 -b .upower
-%patch1 -p1 -b .crash
 
 %build
 autoreconf
@@ -202,6 +196,10 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Mon Sep 27 2010 Richard Hughes <rhughes@redhat.com> - 2.32.0-1
+- New upstream version.
+- Mostly translation updates.
+
 * Thu Sep 01 2010 Richard Hughes <rhughes@redhat.com> - 2.31.91-2
 - Switch to using UPower rather than DeviceKit-power
 - Fix a silly crash in the update viewer.
