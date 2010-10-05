@@ -2,12 +2,12 @@
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.31.4
-Release:   2%{?dist}
+Version:   2.91.1
+Release:   1%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.31/%{name}-%{version}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}.tar.gz
 
 Requires:  gnome-icon-theme
 Requires:  dbus-x11 >= 1.1.2
@@ -81,7 +81,7 @@ desktop-file-install --delete-original                   \
   --dir=$RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/                    \
   $RPM_BUILD_ROOT%{_datadir}/gnome/autostart/gpk-update-icon.desktop
 
-for i in gpk-application gpk-update-viewer gpk-install-file gpk-log gpk-prefs gpk-repo ; do
+for i in gpk-application gpk-update-viewer gpk-install-file gpk-log gpk-prefs ; do
   desktop-file-install --delete-original                                \
     --dir=$RPM_BUILD_ROOT%{_datadir}/applications/                      \
     $RPM_BUILD_ROOT%{_datadir}/applications/$i.desktop
@@ -136,7 +136,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_bindir}/gpk-application
 %{_bindir}/gpk-install-*
 %{_bindir}/gpk-log
-%{_bindir}/gpk-repo
 %{_bindir}/gpk-update-icon
 %{_bindir}/gpk-update-viewer
 %{_bindir}/gpk-dbus-service
@@ -149,7 +148,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-packagekit/gpk-update-viewer.ui
 %{_datadir}/gnome-packagekit/gpk-error.ui
 %{_datadir}/gnome-packagekit/gpk-log.ui
-%{_datadir}/gnome-packagekit/gpk-repo.ui
 %{_datadir}/gnome-packagekit/gpk-signature.ui
 %dir %{_datadir}/gnome-packagekit/icons
 %dir %{_datadir}/gnome-packagekit/icons/hicolor
@@ -169,7 +167,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-prefs.desktop
 %{_datadir}/applications/gpk-install-catalog.desktop
 %{_datadir}/applications/gpk-log.desktop
-%{_datadir}/applications/gpk-repo.desktop
 %{_datadir}/applications/gpk-update-viewer.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.PackageKit.service
 %{_datadir}/glib-2.0/schemas/org.gnome.packagekit.gschema.xml
@@ -185,6 +182,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/applications/gpk-service-pack.desktop
 
 %changelog
+* Tue Oct 05 2010 Richard Hughes <rhughes@redhat.com> - 2.91.1-1
+- New upstream version.
+
 * Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 2.31.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
