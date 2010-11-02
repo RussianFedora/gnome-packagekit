@@ -1,13 +1,14 @@
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%define alphatag                                20101102
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
-Version:   2.91.1
-Release:   1%{?dist}
+Version:   2.91.2
+Release:   0.1.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}.tar.gz
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}-%{?alphatag}.tar.gz
 
 Requires:  gnome-icon-theme
 Requires:  dbus-x11 >= 1.1.2
@@ -30,7 +31,7 @@ BuildRequires: gtk2-devel >= 2.18.1
 BuildRequires: libwnck-devel
 BuildRequires: dbus-devel
 BuildRequires: dbus-glib-devel
-BuildRequires: libnotify-devel >= 0.5.0
+BuildRequires: libnotify-devel >= 0.7.0
 BuildRequires: gnome-panel-devel
 BuildRequires: scrollkeeper
 BuildRequires: gnome-doc-utils >= 0.3.2
@@ -51,21 +52,17 @@ BuildRequires: libgudev1-devel
 BuildRequires: upower-devel >= 0.9.0
 BuildRequires: control-center-devel >= 2.31.4
 
+# obsolete sub-package
+Obsoletes: gnome-packagekit-extra <= 2.91.1
+Provides: gnome-packagekit-extra
+
 %description
 gnome-packagekit provides session applications for the PackageKit API.
 There are several utilities designed for installing, updating and
 removing packages on your system.
 
-%package extra
-Summary: Session applications to manage packages (extra bits)
-Group: Applications/System
-Requires: %{name} = %{version}-%{release}
-
-%description extra
-Extra GNOME applications for using PackageKit that are not normally needed.
-
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{?alphatag}
 
 %build
 %configure --disable-scrollkeeper
@@ -133,22 +130,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS README
-%{_bindir}/gpk-application
-%{_bindir}/gpk-install-*
-%{_bindir}/gpk-log
-%{_bindir}/gpk-update-icon
-%{_bindir}/gpk-update-viewer
-%{_bindir}/gpk-dbus-service
+%{_bindir}/gpk-*
 %{_libdir}/control-center-1/panels/*.so
 %dir %{_datadir}/gnome-packagekit
-%{_datadir}/gnome-packagekit/gpk-application.ui
-%{_datadir}/gnome-packagekit/gpk-client.ui
-%{_datadir}/gnome-packagekit/gpk-eula.ui
-%{_datadir}/gnome-packagekit/gpk-prefs.ui
-%{_datadir}/gnome-packagekit/gpk-update-viewer.ui
-%{_datadir}/gnome-packagekit/gpk-error.ui
-%{_datadir}/gnome-packagekit/gpk-log.ui
-%{_datadir}/gnome-packagekit/gpk-signature.ui
+%{_datadir}/gnome-packagekit/gpk-*.ui
 %dir %{_datadir}/gnome-packagekit/icons
 %dir %{_datadir}/gnome-packagekit/icons/hicolor
 %dir %{_datadir}/gnome-packagekit/icons/hicolor/*
@@ -162,26 +147,18 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{python_sitelib}/packagekit/*py*
 %{_datadir}/omf/gnome-packagekit
 %{_sysconfdir}/xdg/autostart/gpk-update-icon.desktop
-%{_datadir}/applications/gpk-application.desktop
-%{_datadir}/applications/gpk-install-file.desktop
-%{_datadir}/applications/gpk-prefs.desktop
-%{_datadir}/applications/gpk-install-catalog.desktop
-%{_datadir}/applications/gpk-log.desktop
-%{_datadir}/applications/gpk-update-viewer.desktop
+%{_datadir}/applications/gpk-*.desktop
 %{_datadir}/dbus-1/services/org.freedesktop.PackageKit.service
 %{_datadir}/glib-2.0/schemas/org.gnome.packagekit.gschema.xml
 %{_datadir}/GConf/gsettings/org.gnome.packagekit.gschema.migrate
-
-%files extra
-%defattr(-,root,root,-)
-%doc AUTHORS COPYING NEWS README
-%{_bindir}/gpk-backend-status
-%{_bindir}/gpk-service-pack
 %{_datadir}/gnome-packagekit/gpk-service-pack.ui
-%{_datadir}/gnome-packagekit/gpk-backend-status.ui
-%{_datadir}/applications/gpk-service-pack.desktop
+%{_libdir}/gnome-settings-daemon-3.0/gtk-modules/gpk-pk-gtk-module.desktop
 
 %changelog
+* Tue Nov 02 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.1.20101102
+- Update to a git snapshot to fix rawhide.
+- Remove the -extra subpackage, it's too hard to find.
+
 * Tue Oct 05 2010 Richard Hughes <rhughes@redhat.com> - 2.91.1-1
 - New upstream version.
 
