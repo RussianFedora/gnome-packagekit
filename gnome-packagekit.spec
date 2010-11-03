@@ -4,7 +4,7 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.91.2
-Release:   0.1.%{?alphatag}%{?dist}
+Release:   0.2.%{?alphatag}%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
@@ -155,6 +155,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/gtk-modules/gpk-pk-gtk-module.desktop
 
 %changelog
+* Wed Nov 03 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.2.20101102
+- Rebuild now libnotify 0.7.0 is in rawhide.
+
 * Tue Nov 02 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.1.20101102
 - Update to a git snapshot to fix rawhide.
 - Remove the -extra subpackage, it's too hard to find.
