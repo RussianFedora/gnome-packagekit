@@ -5,12 +5,15 @@ Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.91.2
 #Release:   0.2.%{?alphatag}%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 #Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}-%{?alphatag}.tar.gz
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}.tar.gz
+
+# already upstream
+Patch0:    0001-Fix-compile-for-PackageKit-0.6.11.patch
 
 Requires:  gnome-icon-theme
 Requires:  dbus-x11 >= 1.1.2
@@ -66,6 +69,7 @@ removing packages on your system.
 %prep
 #%setup -q -n %{name}-%{version}-%{?alphatag}
 %setup -q
+%patch0 -p1 -b .fix-compile
 
 %build
 %configure --disable-scrollkeeper
@@ -158,6 +162,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/gtk-modules/gpk-pk-gtk-module.desktop
 
 %changelog
+* Mon Nov 08 2010 Richard Hughes <rhughes@redhat.com> - 2.91.2-2
+- Fix compile with PackageKit < 0.6.11
+
 * Mon Nov 08 2010 Richard Hughes <rhughes@redhat.com> - 2.91.2-1
 - New upstream version.
 
