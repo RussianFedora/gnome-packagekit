@@ -1,19 +1,13 @@
 %{!?python_sitelib: %define python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%define alphatag                                20101102
 
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.91.3
-#Release:   0.2.%{?alphatag}%{?dist}
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
-#Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}-%{?alphatag}.tar.gz
-Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}.tar.gz
-
-# already upstream
-#Patch0:    0001-Fix-compile-for-PackageKit-0.6.11.patch
+Source0:   http://download.gnome.org/sources/gnome-packagekit/2.91/%{name}-%{version}.tar.bz2
 
 Requires:  gnome-icon-theme
 Requires:  dbus-x11 >= 1.1.2
@@ -69,7 +63,6 @@ removing packages on your system.
 %prep
 #%setup -q -n %{name}-%{version}-%{?alphatag}
 %setup -q
-#%patch0 -p1 -b .fix-compile
 
 %build
 %configure --disable-scrollkeeper
@@ -92,29 +85,10 @@ for i in gpk-application gpk-update-viewer gpk-install-file gpk-log gpk-prefs ; 
 done
 
 
-# save space by linking identical images in translated docs
-helpdir=$RPM_BUILD_ROOT%{_datadir}/gnome/help/%{name}
-for f in $helpdir/C/figures/*.png; do
-  b="$(basename $f)"
-  for d in $helpdir/*; do
-    if [ -d "$d" -a "$d" != "$helpdir/C" ]; then
-      g="$d/figures/$b"
-      if [ -f "$g" ]; then
-        if cmp -s $f $g; then
-          rm "$g"; ln -s "../../C/figures/$b" "$g"
-        fi
-      fi
-    fi
-  done
-done
-
 rm -f $RPM_BUILD_ROOT%{_libdir}/control-center-1/panels/*.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/control-center-1/panels/*.la
 
 %find_lang %name --with-gnome
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post
 touch --no-create %{_datadir}/icons/hicolor
@@ -162,6 +136,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/gtk-modules/gpk-pk-gtk-module.desktop
 
 %changelog
+* Fri Dec  3 2010 Matthias Clasen <mclasen@redhat.com> - 2.91.3-2
+- Update to 2.91.3
+
 * Mon Nov 08 2010 Richard Hughes <rhughes@redhat.com> - 2.91.2-2
 - Fix compile with PackageKit < 0.6.11
 
