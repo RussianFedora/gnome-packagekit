@@ -1,0 +1,14 @@
+diff -urN gnome-packagekit-2.30.2.orig/src/gpk-check-update.c gnome-packagekit-2.30.2/src/gpk-check-update.c
+--- gnome-packagekit-2.30.2.orig/src/gpk-check-update.c	2010-07-20 12:20:01.686629307 +0400
++++ gnome-packagekit-2.30.2/src/gpk-check-update.c	2010-07-20 12:27:12.054629109 +0400
+@@ -1095,7 +1095,9 @@
+ 	}
+ 
+ 	/* get new update list */
+-	pk_client_get_updates_async (PK_CLIENT(cupdate->priv->task), PK_FILTER_ENUM_NONE, cupdate->priv->cancellable, NULL, NULL,
++	pk_client_get_updates_async (PK_CLIENT(cupdate->priv->task),
++				     pk_bitfield_value (PK_FILTER_ENUM_NONE),
++				     cupdate->priv->cancellable, NULL, NULL,
+ 				     (GAsyncReadyCallback) gpk_check_update_get_updates_finished_cb, cupdate);
+ out:
+ 	return;

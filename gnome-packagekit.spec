@@ -1,4 +1,4 @@
-%define packagekit_version              0.5.0
+%define packagekit_version              0.6.6
 %define dbus_version                    1.1.2
 %define dbus_glib_version               0.73
 %define glib2_version                   2.18.0
@@ -13,11 +13,12 @@
 Summary:   Session applications to manage packages
 Name:      gnome-packagekit
 Version:   2.30.2
-Release:   1%{?dist}
+Release:   1%{?dist}.1
 License:   GPLv2+
 Group:     Applications/System
 URL:       http://www.packagekit.org
 Source0:   http://download.gnome.org/sources/gnome-packagekit/2.30/%{name}-%{version}.tar.gz
+Patch0:    gnome-packagekit-2.30.2-getupdates.patch
 
 Requires:  glib2 >= %{glib2_version}
 Requires:  gtk2 >= %{gtk2_version}
@@ -80,6 +81,7 @@ Extra GNOME applications for using PackageKit that are not normally needed.
 
 %prep
 %setup -q
+%patch0 -p1 -b .getupdates
 
 %build
 %configure --disable-scrollkeeper --disable-schemas-install
@@ -202,6 +204,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 %{_datadir}/applications/gpk-log.desktop
 
 %changelog
+* Tue Jul 20 2010 Arkady L. Shane <ashejn@yandex-team.ru> - 2.30.2-1.1
+- fix rh#615099 - no updates detected
+
 * Thu May 27 2010 Richard Hughes <rhughes@redhat.com> - 2.30.2-1
 - New upstream version.
 - Always show the search type menu icons.
